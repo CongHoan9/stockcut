@@ -1,0 +1,159 @@
+{
+ "scope": "builtin",
+ "video": [
+  {
+   "name": "video1.mp4",
+   "path": "/Asset/video/video1.mp4",
+   "size": 622584,
+   "scope": "builtin"
+  },
+  {
+   "name": "video2.mp4",
+   "path": "/Asset/video/video2.mp4",
+   "size": 660759,
+   "scope": "builtin"
+  },
+  {
+   "name": "video3.mp4",
+   "path": "/Asset/video/video3.mp4",
+   "size": 792364,
+   "scope": "builtin"
+  },
+  {
+   "name": "video4.mp4",
+   "path": "/Asset/video/video4.mp4",
+   "size": 2042143,
+   "scope": "builtin"
+  },
+  {
+   "name": "video5.mp4",
+   "path": "/Asset/video/video5.mp4",
+   "size": 1865930,
+   "scope": "builtin"
+  },
+  {
+   "name": "video6.mp4",
+   "path": "/Asset/video/video6.mp4",
+   "size": 31273404,
+   "scope": "builtin"
+  }
+ ],
+ "image": [
+  {
+   "name": "Dr4in.jpg",
+   "path": "/Asset/image/Dr4in.jpg",
+   "size": 56387,
+   "scope": "builtin"
+  },
+  {
+   "name": "So Bitter.jpg",
+   "path": "/Asset/image/So Bitter.jpg",
+   "size": 111916,
+   "scope": "builtin"
+  },
+  {
+   "name": "HotelRoom.png",
+   "path": "/Asset/image/HotelRoom.png",
+   "size": 442624,
+   "scope": "builtin"
+  },
+  {
+   "name": "Mogged.jpg",
+   "path": "/Asset/image/Mogged.jpg",
+   "size": 95738,
+   "scope": "builtin"
+  },
+  {
+   "name": "cd-cover-v2.png",
+   "path": "/Asset/image/cd-cover-v2.png",
+   "size": 6465128,
+   "scope": "builtin"
+  },
+  {
+   "name": "cd-cover.png",
+   "path": "/Asset/image/cd-cover.png",
+   "size": 4889990,
+   "scope": "builtin"
+  },
+  {
+   "name": "godzilla.jpg",
+   "path": "/Asset/image/godzilla.jpg",
+   "size": 71374,
+   "scope": "builtin"
+  },
+  {
+   "name": "hoannaoh.png",
+   "path": "/Asset/image/hoannaoh.png",
+   "size": 1385511,
+   "scope": "builtin"
+  }
+ ],
+ "audio": [
+  {
+   "type": [
+    "All",
+    "Phonk",
+    "Background music",
+    "Pop",
+    "Chill",
+    "R&B",
+    "High Tempo"
+   ],
+   "Categories": [
+    "RECOMMEND",
+    "POP",
+    "R&B",
+    "HEALING",
+    "WARM",
+    "HIGH TEMPO"
+   ],
+   "Recommended": [
+    {
+     "type": "Chill",
+     "name": "Hotel Room (Best Part)",
+     "path": "/Asset/audio/Hotel Room (Best Part).mp3",
+     "size": 176201,
+     "duration": "00:13",
+     "artist": "Chill / Lo-Fi",
+     "scope": "builtin"
+    },
+    {
+     "type": "Background music",
+     "name": "So Bitter",
+     "path": "/Asset/audio/So Bitter.m4a",
+     "size": 4395559,
+     "duration": "02:16",
+     "artist": "Acoustic / BGM",
+     "scope": "builtin"
+    },
+    {
+     "type": "Background music",
+     "name": "Hotel Room",
+     "path": "/Asset/audio/Hotel Room.mp3",
+     "size": 346195,
+     "duration": "00:26",
+     "artist": "Acoustic / BGM",
+     "scope": "builtin"
+    },
+    {
+     "type": "Phonk",
+     "name": "Dr4in",
+     "path": "/Asset/audio/Dr4in.m4a",
+     "size": 4574051,
+     "duration": "02:30",
+     "artist": "Phonk / Drift",
+     "scope": "builtin"
+    },
+    {
+     "type": "R&B",
+     "name": "One Of The Girls",
+     "path": "/Asset/audio/One Of The Girls.m4a",
+     "size": 4933792,
+     "duration": "04:04",
+     "artist": "R&B / Soul",
+     "scope": "builtin"
+    }
+   ]
+  }
+ ]
+}

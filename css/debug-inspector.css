@@ -1,0 +1,1139 @@
+﻿/* ============================================================================
+   css/debug-inspector.css — BẢNG ĐIỀU KHIỂN & DEBUG STATUS THEME ĐỒNG BỘ
+   - Nguyên tắc công trình:
+     1. Khung cửa sổ trượt (drawer) sử dụng Overlay (position: absolute),
+        TUYỆT ĐỐI không làm xáo trộn DOM, không đẩy layout, không làm co nhỏ render-viewport!
+     2. Nghiêm cấm Icon / Emoji trang trí. Sử dụng typography chuẩn mực.
+     3. TUÂN THỦ GRID CỐ ĐỊNH CHỐNG GIẬT (Anti-Jitter Fixed Grid):
+        Hủy diệt mọi flex co giãn ngẫu nhiên cho các trường thông số cố định.
+        Mỗi ô số liệu (FPS, Time, Frame, Mode, Fx, Layers, Res) đều có một cột Grid
+        định kích thước cố định bằng pixel, triệt tiêu 100% hiện tượng nhảy giật khi số thay đổi.
+     4. PHẦN DEBUG TELEMETRY CHIA 3 CỘT — TRÌNH BÀY NHƯ SÁCH (Book Grid Layout):
+        Phân chia 3 cột mạch lạc, có đường phân chia dọc trang sách, các hàng số liệu
+        thẳng thớm, dễ quan sát, không tạo card đóng hộp cô lập.
+     5. KHÔI PHỤC MÀU NHẬN DIỆN TRỰC QUAN CHO ITEMLIST EFFECT VÀ LAYER:
+        Màu xanh lam cho WebGL Ping-Pong, tím cho Canvas 2D, xanh da trời cho timestamp/bounds,
+        vàng hổ phách cho params/z-index, xanh lục cho static, cam cho dynamic/active.
+     6. TUYỆT ĐỐI KHÔNG XUỐNG DÒNG (Strict No-Wrapping): Các label, tab titles, status bar
+        nằm trên 1 dòng duy nhất, vượt quá độ rộng tự động thêm dấu "...".
+     7. Tương tác: CHỈ nhận thao tác KÉO CHUỘT (ns-resize) ở thanh mép trên #debug-resizer.
+   ============================================================================ */
+
+html {
+    scroll-behavior: smooth !important;
+}
+
+/* 1. CONTAINER GỐC CỦA DEBUG PANEL */
+.debug-inspector-panel,
+.debug-inspector-panel * {
+    box-sizing: border-box;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+.debug-inspector-panel {
+    width: 100%;
+    height: 25px;
+    position: relative;
+    background: #141418;
+    border-top: 1px solid var(--border-subtle, #24242c) !important;
+    z-index: 100;
+    font-family: var(--font-main) !important;
+    font-weight: normal !important;
+}
+
+/* 2. THANH KÉO CHUỘT RESIZER Ở MÉP TRÊN (CHỈ MỞ RỘNG BẰNG KÉO) */
+.debug-resizer {
+    position: absolute;
+    bottom: calc(26px + var(--dbg-h, 0px));
+    left: 0;
+    width: 100%;
+    height: 10px;
+    background: transparent;
+    cursor: ns-resize;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+    z-index: 960;
+}
+
+.debug-resizer-grip {
+    width: 40px;
+    height: 3px;
+    border-radius: 2px !important;
+    background: var(--text-dim, #545464); border: 1px solid var(--border-default, #2d2d38);
+    transition: all 0.2s ease;
+}
+
+.debug-resizer:hover .debug-resizer-grip,
+.debug-resizer.is-dragging .debug-resizer-grip {
+    width: 52px;
+    background: #ffffff;
+}
+
+/* 3. CỬA SỔ TRƯỢT OVERLAY (DRAWER SHEET)
+   Trượt lên trên dạng overlay tuyệt đối, KHÔNG đẩy hay co nhỏ render-viewport */
+.debug-drawer-body {
+    position: absolute;
+    bottom: 25px;
+    /* Bám chặt mép trên của status bar */
+    left: 0;
+    width: 100%;
+    height: 0px;
+    max-height: var(--drawer-avail-h, calc(100dvh - 75px));
+    /* Giới hạn trong khoảng giữa header trên và status bar */
+    overflow: hidden;
+    background: #141418 !important;
+    border-top: 1px solid var(--border-subtle, #24242c) !important;
+    box-shadow: none !important;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0;
+}
+
+.debug-drawer-body.is-open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* HEADER CỦA DRAWER: Tách riêng đồng bộ với .media-drawer-header
+   position: sticky và background màu nền để nội dung bên dưới khi scroll KHÔNG BAO GIỜ che phủ header */
+.debug-drawer-header {
+    display: flex !important;
+    align-items: center !important;
+    padding: 0 20px !important;
+    height: 45px !important;
+    min-height: 45px !important;
+    background: #1f1f26 !important;
+    border-bottom: 1px solid var(--border-subtle, #24242c) !important;
+    box-shadow: none !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+    overflow: hidden !important;
+    position: sticky !important;
+    top: 0 !important;
+    z-index: 30 !important;
+    font-family: var(--font-heading) !important;
+}
+
+/* Đường kẻ phân cách ngang đồng bộ với .media-header-divider */
+.debug-header-divider {
+    height: 0px !important;
+    border-top: 1px solid #24242c !important;
+    background: transparent !important;
+    margin: 0 20px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 45px;
+    z-index: 30;
+}
+
+/* Tabs Navigation: Đồng bộ cấu trúc và style với .media-tabs-nav */
+.debug-tabs-nav {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    width: max-content;
+    white-space: nowrap !important;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+/* Tab button: gạch chân tương tự media-tab-btn, phẳng, không viền hộp, tuyệt đối không xuống dòng */
+.debug-tab-btn {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 2px solid transparent !important;
+    color: #b1b2b5 !important;
+    font-size: 0.85rem !important;
+    font-weight: normal !important;
+    font-family: var(--font-heading) !important;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    padding: 0 8px !important;
+    height: 100%;
+    width: auto !important;
+    max-width: max-content !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    white-space: nowrap !important;
+    position: relative;
+    transition: color 0.1s, border-color 0.1s;
+    outline: none;
+    user-select: none;
+    box-sizing: border-box;
+    text-transform: uppercase !important;
+    flex-shrink: 0;
+    overflow: hidden;
+    min-width: 0;
+    text-overflow: ellipsis;
+}
+
+.debug-tab-btn span,
+.debug-tab-btn b,
+.debug-tab-btn * {
+    display: inline !important;
+    white-space: nowrap !important;
+}
+
+.debug-tab-btn:hover {
+    background: transparent !important;
+    color: var(--text-primary, #ffffff) !important;
+}
+
+.debug-tab-btn.active {
+    color: #ffffff !important;
+    border-bottom: 2px solid var(--text-accent, #43ad6a) !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    text-shadow: none !important;
+}
+
+.debug-tab-sep {
+    color: #4b5563;
+    font-size: 0.76rem;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* NỘI DUNG TABS: Đệm 0 20px 10px 20px, scroll cố định, chống xáo trộn layout */
+.debug-drawer-content {
+    flex: 1;
+    overflow-y: scroll !important;
+    scrollbar-gutter: stable;
+    overflow-x: hidden;
+    padding: 0 20px 10px 20px;
+    box-sizing: border-box;
+    min-height: 0;
+    min-width: 0;
+}
+
+.debug-tab-pane {
+    display: none;
+    height: auto;
+    min-height: 100%;
+    min-width: 0;
+    padding-top: 10px;
+    box-sizing: border-box;
+}
+
+.debug-tab-pane.active {
+    display: block;
+}
+
+/* 4. TAB 1: SMART DASHBOARD LAYOUT (FULL-WIDTH STREAMLINED DESIGN — KHÔNG CHIA 3 CỘT) */
+.debug-smart-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.debug-monitor-layout,
+.debug-cache-layout {
+    gap: 20px;
+    display: grid;
+    align-items: center;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    padding: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.debug-monitor-stats,
+.debug-monitor-graph-col,
+.debug-cache-summary {
+    margin-bottom: auto;
+}
+/* NỬA TRÁI: 4 DÒNG THÔNG SỐ XẾP DỌC (GIÃN CHIỀU CAO THOÁNG ĐÃNG) */
+.debug-monitor-stats {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.debug-stat-line,
+.debug-cache-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.debug-stat-line:last-child,
+.debug-cache-row:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.debug-stat-lbl,
+.debug-cache-lbl {
+    font-size: 0.74rem;
+    font-family: var(--font-label) !important;
+    font-weight: 600 !important;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: left;
+    white-space: nowrap !important;
+    line-height: 1.2;
+    display: inline-flex;
+    align-items: center;
+}
+
+.debug-stat-lbl {
+    width: 58px;
+    flex-shrink: 0;
+}
+
+.debug-stat-num {
+    font-size: 0.80rem;
+    font-family: var(--font-code) !important;
+    font-weight: 600 !important;
+    font-weight: normal;
+    color: #ffffff !important;
+    letter-spacing: -0.1px;
+    text-align: left;
+    font-variant-numeric: tabular-nums;
+    flex-shrink: 0;
+}
+
+.debug-stat-sub-info {
+    font-family: var(--font-code) !important;
+    font-variant-numeric: tabular-nums !important;
+    margin-left: auto;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 5px;
+    text-align: right;
+    justify-content: flex-end;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+}
+
+.debug-stat-unit {
+    font-size: 0.74rem;
+    color: #9ca3af;
+    font-weight: normal;
+}
+
+.debug-stat-sub {
+    font-size: 0.74rem;
+    color: #828294;
+    font-weight: 400;
+}
+
+.debug-stat-sep {
+    color: #4b5563;
+    font-size: 0.8rem;
+    margin: 0 1px;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+.debug-stat-mode-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.debug-mode-pill {
+    font-size: 0.68rem;
+    font-weight: normal;
+    border-radius: 3px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.debug-mode-pill.full {
+    color: #f97316;
+}
+
+.debug-mode-pill.dirty {
+    color: #10b981;
+}
+
+.debug-mode-pill.none,
+.debug-mode-pill.breaker {
+    color: #06b6d4;
+}
+
+
+
+/* NỬA PHẢI: KHỐI BIỂU ĐỒ ("bieu do") & THANH HẠN MỨC ("thanh han muc") */
+.debug-monitor-graph-col {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+    min-width: 0;
+    width: 100%;
+}
+
+.text-white {
+    color: #ffffff;
+}
+
+.text-accent {
+    color: #ffffff;
+}
+
+/* KHỐI 2: FULL-WIDTH GRAPH PANEL */
+.debug-graph-panel {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+}
+
+.debug-graph-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    height: 20px;
+    white-space: nowrap !important;
+}
+
+.debug-graph-title {
+    font-size: 0.72rem;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    color: #ffffff;
+    text-transform: uppercase;
+}
+
+.debug-graph-stats {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    color: #9ca3af;
+}
+
+.debug-graph-stats b {
+    color: #ffffff;
+    font-weight: normal;
+}
+
+/* TĂNG CHIỀU CAO BIỂU ĐỒ (CANVAS CONTAINER) */
+.debug-canvas-container {
+    position: relative;
+    width: 100%;
+    height: 75px;
+    border-radius: 3px;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid #222228;
+    overflow: hidden;
+    margin-top: 2px;
+    margin-bottom: 5px;
+    box-sizing: border-box;
+}
+
+.debug-fps-canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.debug-budget-meter-row {
+    display: grid;
+    grid-template-columns: max-content minmax(0, 1fr) 42px;
+    align-items: center;
+    gap: 10px;
+    height: 15px;
+    white-space: nowrap !important;
+    font-size: 0.68rem;
+    color: #9ca3af;
+}
+
+.debug-budget-meter-lbl {
+    font-weight: normal;
+    letter-spacing: 0.3px;
+    color: #828294;
+    font-size: 0.68rem;
+}
+
+.debug-budget-track {
+    width: 100%;
+    height: 6px;
+    background: #0e0e12 !important;
+    border: 1px solid #28282e !important;
+    border-radius: 0px !important;
+    overflow: hidden;
+}
+
+.debug-budget-fill {
+    height: 100%;
+    background: #10b981 !important;
+    border-radius: 0px !important;
+    transition: width 0.12s ease-out, background-color 0.2s ease;
+}
+
+.debug-budget-pct {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.72rem;
+    color: #ffffff;
+    text-align: right;
+}
+
+/* 5. TAB 2 & 3: EFFECTS & LAYERS — PURE CSS GRID (CHỐNG XÁO TRỘN DOM & JITTER) */
+.debug-grid-table {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.dbg-grid-body {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+/* Row cấu trúc Grid cho Effects: Khóa cứng các track cột, khi text dài/ngắn không làm xô lệch DOM */
+.dbg-fx-grid-row,
+.dbg-layers-grid-row {
+    display: grid;
+    align-items: center;
+    gap: 12px;
+    height: 40px;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    white-space: nowrap !important;
+    min-width: 0;
+    box-sizing: border-box;
+    transition: background-color 0.15s ease;
+}
+
+.dbg-fx-grid-row {
+    grid-template-columns: 20px minmax(0, 6fr) minmax(0, 5fr) minmax(0, 5fr) minmax(0, 9fr) minmax(0, 7fr);
+}
+
+/* Row cấu trúc Grid cho Layers: Cố định vị trí các cột # | ID | Loại | Z | Bounds | Trạng thái */
+.dbg-layers-grid-row {
+    grid-template-columns: 20px minmax(0, 6fr) minmax(0, 5fr) minmax(0, 5fr) minmax(0, 9fr) minmax(0, 7fr);
+}
+
+.dbg-grid-header {
+    font-size: 0.72rem;
+    font-family: var(--font-label) !important;
+    font-weight: 600 !important;
+    font-weight: normal;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    position: sticky;
+    top: 0;
+    background: #151518;
+    z-index: 20;
+    flex-shrink: 0;
+}
+
+/* Mặt nạ chặn trên (Top Clipping Barrier): Triệt tiêu hoàn toàn hiện tượng item lọt lên trên header khi cuộn */
+
+
+.dbg-grid-th {
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.dbg-grid-data-row:hover {
+    background: #1e1e1f;
+}
+
+.dbg-grid-data-row:last-child {
+    border-bottom: none;
+}
+
+.dbg-grid-cell {
+    font-size: 0.80rem;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+/* Cột cuối cùng của mọi bảng Grid (Header & Cell) luôn căn phải */
+.dbg-fx-grid-row> :last-child,
+.dbg-layers-grid-row> :last-child,
+.dbg-grid-header> :last-child,
+.dbg-grid-data-row> :last-child {
+    text-align: right;
+    justify-self: end;
+}
+
+.dbg-grid-empty {
+    text-align: center;
+    color: #6b7280;
+    font-style: italic;
+    padding: 25px;
+    white-space: nowrap !important;
+    font-size: 0.82rem;
+}
+
+.debug-cache-readouts {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+}
+
+.debug-cache-summary {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    margin-top: 10px;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.debug-cache-heading {
+    display: grid !important;
+    grid-template-columns: max-content 1fr max-content max-content !important;
+    align-items: center !important;
+    gap: 6px !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    height: 20px !important;
+    box-sizing: border-box !important;
+}
+
+.debug-cache-heading-title {
+    min-width: 0;
+    overflow: hidden;
+    color: #f2f2f8;
+    font-size: 11px;
+    font-family: var(--font-heading);
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+}
+
+.debug-cache-heading-spacer {
+    min-width: 0;
+}
+
+.debug-cache-hit-label {
+    color: #828294;
+    font-size: 11px;
+    font-family: var(--font-main);
+    font-weight: normal;
+    white-space: nowrap !important;
+}
+
+#dbg-cache-hit-rate {
+    color: #10b981;
+    font-family: var(--font-mono, monospace);
+    font-weight: normal;
+    font-size: 11px;
+    white-space: nowrap !important;
+}
+
+.debug-cache-counts {
+    display: grid;
+    grid-template-rows: repeat(2, minmax(0, 1fr));
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 75px!important;
+    margin-top: 2px;
+    border: 1px solid var(--border-default, #2d2d38);
+    border-radius: var(--radius-sm, 4px);
+    background: var(--bg-canvas, #0e0e12);
+    box-sizing: border-box;
+}
+
+.debug-cache-count-row {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: center;
+    height: 37.5px;
+    gap: 10px;
+    min-height: 0;
+    padding: 0 10px;
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    box-sizing: border-box;
+}
+
+.debug-cache-count-row:last-child {
+    border-bottom: 1px solid transparent;
+}
+
+.debug-cache-lbl {
+    width: auto !important;
+    flex: 1;
+    min-width: 0;
+}
+
+.debug-cache-status-row .debug-cache-lbl {
+    flex: 0 0 auto;
+}
+
+.debug-cache-status-row {
+    justify-content: flex-start;
+}
+
+.debug-cache-status-row > .debug-cache-value {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    min-width: 0;
+    margin-left: auto;
+}
+
+.debug-cache-status {
+    flex-shrink: 0;
+    color: #ffffff;
+    font-size: 0.74rem;
+    font-weight: normal;
+    white-space: nowrap !important;
+}
+
+.debug-cache-detail {
+    min-width: 0;
+    overflow: hidden;
+    color: #9ca3af;
+    font-size: 0.74rem;
+    text-align: right;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+}
+
+.debug-cache-hash {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.76rem;
+    color: #ffffff;
+    white-space: nowrap !important;
+    margin-left: auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex-shrink: 1;
+    line-height: 1.2;
+}
+
+.dbg-cache-col {
+    font-size: 0.74rem;
+    color: #9ca3af;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.debug-cache-count-row .dbg-cache-col:last-child {
+    justify-content: flex-end;
+    text-align: right;
+}
+
+.dbg-cache-col b {
+    font-size: 0.80rem;
+    font-weight: normal;
+    font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 640px) {
+    .debug-cache-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 7px;
+    }
+
+    .debug-cache-readouts {
+        gap: 7px;
+    }
+
+    .debug-cache-heading-title {
+        width: 100%;
+        min-width: 0;
+        box-sizing: border-box;
+    }
+
+    .debug-cache-hit-label,
+    #dbg-cache-hit-rate {
+        font-size: 10px;
+    }
+
+    .debug-cache-status-row .debug-cache-lbl {
+        flex: 0 1 auto;
+        min-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .debug-cache-count-row {
+        gap: 5px;
+    }
+
+    .dbg-cache-col {
+        gap: 2px;
+        font-size: 0.64rem;
+    }
+
+    .dbg-cache-col b {
+        font-size: 0.72rem;
+    }
+}
+
+.debug-cache-stats {
+    font-size: 0.82rem;
+    color: #9ca3af;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.debug-cache-stats b {
+    font-weight: normal;
+}
+
+
+
+.dbg-stat-val {
+    font-weight: normal;
+}
+
+.debug-cache-stats b.text-green,
+.text-green {
+    color: #10b981 !important;
+}
+
+.debug-cache-stats b.text-yellow,
+.text-yellow {
+    color: #f59e0b !important;
+}
+
+.debug-cache-stats b.text-cyan,
+.text-cyan {
+    color: #06b6d4 !important;
+}
+
+.debug-cache-stats b.text-orange,
+.text-orange {
+    color: #f97316 !important;
+}
+
+/* 7. STATUS BAR PHẲNG — 2 CỘT GRID 1FR 1FR, CĂN GIỮA FPS & TIME */
+.debug-status-bar {
+    width: 100%;
+    height: 25px;
+    background: #141418 !important;
+    border-top: 1px solid var(--border-subtle, #24242c) !important;
+    border-bottom: none !important;
+    box-sizing: border-box;
+    font-size: 0.72rem;
+    line-height: 1 !important;
+    position: relative;
+    z-index: 10;
+    overflow: hidden;
+    padding: 0 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 10px;
+}
+
+.debug-status-col {
+    display: grid;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    white-space: nowrap !important;
+    min-width: 0;
+    line-height: 1 !important;
+}
+
+.debug-status-col-left {
+    grid-template-columns:
+        max-content
+        /* 1. DEBUG brand */
+        max-content
+        /* 2. DRAWER tag */
+        max-content
+        /* 3. Mode cell (DIRTY / TT HIT) */
+        minmax(0, 1fr)
+        /* 4. Spacer */
+        max-content;
+    /* 5. FPS cell (dot + 60.0 FPS (16.6ms)) */
+    gap: 5px;
+}
+
+.debug-status-col-right {
+    grid-template-columns:
+        max-content
+        /* 1. Time cell (00:00.000 F0) */
+        minmax(0, 1fr)
+        /* 2. Spacer */
+        minmax(0, 30px)
+        /* 3. Fx: 0 */
+        minmax(0, 30px)
+        /* 4. Layers: 0 */
+        max-content;
+    /* 5. Size (1920x1080) */
+    gap: 5px;
+}
+
+.dbg-cell-fps {
+    justify-content: flex-end;
+    justify-self: end;
+}
+
+.dbg-cell-time {
+    justify-content: flex-start;
+    justify-self: start;
+}
+
+.dbg-cell-spacer {
+    min-width: 0;
+    width: 100%;
+}
+
+/* Các cells số liệu với width cố định 100% trong grid slot, co giãn linh hoạt khi thiếu chỗ */
+.dbg-cell {
+    display: inline-flex;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    white-space: nowrap !important;
+    text-overflow: ellipsis;
+    line-height: 1 !important;
+    transform: translateY(-1px);
+}
+
+.dbg-cell-size {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap !important;
+}
+
+.dbg-cell-size span {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Thống nhất 100% typography và style cho toàn bộ thanh debug */
+.debug-status-bar,
+.debug-status-bar *,
+.debug-brand-title,
+.debug-status-tag,
+.debug-mode-text,
+.debug-status-val,
+.debug-status-sub,
+.debug-status-lbl,
+.dbg-cell,
+.dbg-cell span,
+#chip-fps-text,
+#chip-fps-num,
+#chip-ms-text,
+#chip-time-text,
+#chip-frame-text,
+#chip-fx-text,
+#chip-layers-text,
+#chip-size-text {
+    font-family: var(--font-main) !important;
+    font-weight: normal !important;
+    line-height: 1 !important;
+    transform: none !important;
+    text-shadow: none !important;
+}
+
+.debug-brand-title {
+    font-size: 0.74rem !important;
+    font-weight: normal !important;
+    letter-spacing: 0.5px !important;
+    color: #ffffff !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    border-radius: 0px !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    cursor: default !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+    height: 100% !important;
+}
+
+/* Tag DRAWER: KHÔNG click toggle, chỉ đóng vai trò nhãn nhận diện */
+.debug-status-tag {
+    font-size: 0.74rem !important;
+    font-weight: normal !important;
+    letter-spacing: 0.4px !important;
+    color: #9ca3af !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    border-radius: 0px !important;
+    background: transparent !important;
+    pointer-events: none !important;
+    user-select: none !important;
+    cursor: default !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+    height: 100% !important;
+}
+
+.debug-status-tag.is-worker {
+    color: #06b6d4 !important;
+}
+
+.debug-status-tag.is-main {
+    color: #9ca3af !important;
+}
+
+/* Dấu phân cách dọc | đồng bộ với media-tab-sep */
+.debug-sep {
+    color: #4b5563;
+    font-size: 0.72rem;
+    user-select: none;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+}
+
+/* Giá trị thông số trong status bar */
+.debug-status-val {
+    font-size: 0.74rem !important;
+    color: #ffffff !important;
+    font-weight: normal;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+}
+
+.debug-status-sub {
+    font-size: 0.68rem !important;
+    color: #6b7280 !important;
+    margin-left: 3px !important;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+}
+
+.debug-status-lbl {
+    font-size: 0.74rem !important;
+    color: #9ca3af !important;
+    font-weight: 400;
+    white-space: nowrap !important;
+    flex-shrink: 0;
+    margin-right: 2px !important;
+}
+
+#chip-fps-dot,
+#dbg-fps-status-dot {
+    display: none !important;
+}
+
+#chip-fps-num {
+    font-weight: normal;
+}
+
+/* Chấm đèn trạng thái kỹ thuật (functional status LED, 5px) */
+.debug-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0;
+    margin-right: 5px;
+}
+
+.debug-dot.green {
+    background: #10b981;
+    box-shadow: 0 0 5px #10b981;
+}
+
+.debug-dot.yellow {
+    background: #f59e0b;
+}
+
+.debug-dot.orange {
+    background: #f97316;
+}
+
+.debug-mode-text {
+    font-size: 0.74rem !important;
+    letter-spacing: 0.4px !important;
+    padding: 0 4px !important;
+    margin: 0 !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    vertical-align: middle !important;
+    height: 100% !important;
+    flex-shrink: 0;
+    font-weight: normal;
+}
+
+.debug-mode-text.dirty {
+    color: #10b981 !important;
+}
+
+.debug-mode-text.full {
+    color: #f59e0b !important;
+}
+
+.debug-mode-text.breaker,
+.debug-mode-text.none {
+    color: #06b6d4 !important;
+}
+
+/* STATUS BAR LÀ VÙNG DUY NHẤT CỦA PANEL DEBUG NHẬN CHUỘT (1 click thu/phóng drawer)
+   - Thanh (cha) nhận chuột và không bôi đen.
+   - Con: pointer-events: none  => chuột "xuyên" qua con, sự kiện luôn trúng thẳng cha.
+          user-select: none     => không bao giờ bị bôi xanh, kể cả khi kéo/click nhanh. */
+.debug-inspector-panel .debug-status-bar {
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.debug-inspector-panel .debug-status-bar * {
+    pointer-events: none !important;
+    user-select: none !important;
+    -webkit-user-select: none !important;
+}
+
+.debug-inspector-panel .debug-status-bar *::selection,
+.debug-inspector-panel .debug-status-bar::selection {
+    background: transparent;
+}
+
+/* Headers and Tab titles strictly use var(--font-heading) */
+.debug-drawer-header,
+.debug-drawer-header *,
+.debug-tab-btn,
+.debug-cache-heading-title {
+    font-family: var(--font-heading) !important;
+    font-weight: normal !important;
+}

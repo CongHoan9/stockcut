@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bit-llm.local/schemas/agent-response.schema.json",
+  "title": "Bit-LLM video agent response",
+  "oneOf": [
+    {"$ref": "#/$defs/chat"},
+    {"$ref": "#/$defs/explain"},
+    {"$ref": "#/$defs/clarify"},
+    {"$ref": "#/$defs/recall"},
+    {"$ref": "#/$defs/action"}
+  ],
+  "$defs": {
+    "chat": {"type":"object","required":["type","text"],"properties":{"type":{"const":"chat"},"text":{"type":"string"}},"additionalProperties":false},
+    "explain": {"type":"object","required":["type","topic","files","answer"],"properties":{"type":{"const":"explain"},"topic":{"type":"string","minLength":1},"files":{"type":"array","items":{"type":"string"}},"answer":{"type":"string","minLength":1}},"additionalProperties":false},
+    "clarify": {"type":"object","required":["type","question"],"properties":{"type":{"const":"clarify"},"question":{"type":"string","minLength":1}},"additionalProperties":false},
+    "recall": {"type":"object","required":["type","query"],"properties":{"type":{"const":"recall"},"query":{"type":"string","minLength":1,"maxLength":512}},"additionalProperties":false},
+    "action": {"$ref":"agent-action.schema.json"}
+  }
+}

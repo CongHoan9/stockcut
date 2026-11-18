@@ -1,0 +1,335 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://bit-llm.local/schemas/agent-action.schema.json",
+  "title": "Bit-LLM video editor action",
+  "oneOf": [
+    {
+      "type": "object",
+      "required": [
+        "action",
+        "config"
+      ],
+      "properties": {
+        "action": {
+          "const": "set_config"
+        },
+        "config": {
+          "type": "object",
+          "required": [
+            "seed"
+          ],
+          "properties": {
+            "seed": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967295
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "action",
+        "item"
+      ],
+      "properties": {
+        "action": {
+          "const": "add_item"
+        },
+        "item": {
+          "$ref": "#/$defs/item"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "action",
+        "where",
+        "set"
+      ],
+      "properties": {
+        "action": {
+          "const": "update_items"
+        },
+        "where": {
+          "$ref": "#/$defs/selector"
+        },
+        "set": {
+          "$ref": "#/$defs/update"
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "required": [
+        "action",
+        "where"
+      ],
+      "properties": {
+        "action": {
+          "const": "delete_items"
+        },
+        "where": {
+          "$ref": "#/$defs/selector"
+        }
+      },
+      "additionalProperties": false
+    }
+  ],
+  "$defs": {
+    "selector": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "type": {
+          "enum": [
+            "image",
+            "effect",
+            "text",
+            "lyric",
+            "audio",
+            "background",
+            "div"
+          ]
+        },
+        "effect": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        }
+      },
+      "additionalProperties": false
+    },
+    "item": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "image",
+            "effect",
+            "text",
+            "lyric",
+            "audio",
+            "background",
+            "div"
+          ]
+        },
+        "src": {
+          "type": "string",
+          "minLength": 1
+        },
+        "effect": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "start": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end": {
+          "type": "number",
+          "minimum": 0
+        },
+        "z-index": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "left": {
+          "type": "string"
+        },
+        "top": {
+          "type": "string"
+        },
+        "objectFit": {
+          "enum": [
+            "cover",
+            "contain",
+            "fill",
+            "none",
+            "scale-down"
+          ]
+        },
+        "fade": {
+          "type": "number",
+          "minimum": 0
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "density": {
+          "type": "number"
+        },
+        "blur": {
+          "type": "number"
+        },
+        "tolerance": {
+          "type": "number"
+        },
+        "intensity": {
+          "type": "number"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "radius": {
+          "type": "number"
+        },
+        "bloomFactor": {
+          "type": "number"
+        },
+        "subpix": {
+          "type": "number"
+        },
+        "edgeThreshold": {
+          "type": "number"
+        },
+        "edgeThresholdMin": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "image",
+                  "audio"
+                ]
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "src"
+            ]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "effect"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "effect"
+            ]
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "update": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "radius": {
+          "type": "number"
+        },
+        "speed": {
+          "type": "number"
+        },
+        "density": {
+          "type": "number"
+        },
+        "blur": {
+          "type": "number"
+        },
+        "tolerance": {
+          "type": "number"
+        },
+        "intensity": {
+          "type": "number"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "bloomFactor": {
+          "type": "number"
+        },
+        "subpix": {
+          "type": "number"
+        },
+        "edgeThreshold": {
+          "type": "number"
+        },
+        "edgeThresholdMin": {
+          "type": "number"
+        },
+        "source": {
+          "type": "string"
+        },
+        "fade": {
+          "type": "number",
+          "minimum": 0
+        },
+        "z-index": {
+          "type": "integer"
+        },
+        "objectFit": {
+          "enum": [
+            "cover",
+            "contain",
+            "fill",
+            "none",
+            "scale-down"
+          ]
+        },
+        "start": {
+          "type": "number",
+          "minimum": 0
+        },
+        "end": {
+          "type": "number",
+          "minimum": 0
+        },
+        "color": {
+          "type": "string",
+          "pattern": "^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3})?$"
+        },
+        "width": {
+          "type": "string"
+        },
+        "height": {
+          "type": "string"
+        },
+        "left": {
+          "type": "string"
+        },
+        "top": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -1,0 +1,45 @@
+/* ============================================================================
+   timeline.css — CSS NỀN của Timeline Engine (js/timeline-new.js)
+   Trước đây nằm trong chuỗi BASE_CSS bên trong JS. Chỉ chứa phần TĨNH:
+   @property, preset @keyframes (tl-fade, tl-spin, tl-slide-up, tl-slide-right),
+   class cấu trúc (.tl-stage, .tl-item, .tl-text, .tl-char ...) và hiệu ứng .tl-silk.
+   Phần ĐỘNG theo dự án (stylesheet/animations/keyframes trong project.json)
+   vẫn do engine sinh ra vào <style id="tl-engine-style"> — nạp SAU file này nên
+   luôn ghi đè được.
+   ============================================================================ */
+
+@property --volume { syntax: '<number>'; inherits: false; initial-value: 1; }
+@property --tl-phase { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+.tl-stage { position: absolute; left: 0; top: 0; overflow: hidden; container-type: size; transform-origin: 0 0; pointer-events: none; }
+.tl-item { position: absolute; left: 0; top: 0; margin: 0; }
+.tl-cd { position: relative; display: inline-block; width: 700px; height: 700px; aspect-ratio: 1 / 1; }
+.tl-cd > img { position: absolute; display: block; max-width: none; }
+.tl-cd-art { left: 49%; top: 49%; width: calc(var(--cd-art, .80) * 100%); height: calc(var(--cd-art, .80) * 100%); translate: -50% -50%; border-radius: 50%; object-fit: cover; -webkit-mask: radial-gradient(circle, transparent 0% 14.5%, black 15% 100%); mask: radial-gradient(circle, transparent 0% 14.5%, black 15% 100%);}
+.tl-cd-case { left: 0; top: 0; width: 100%; height: 100%; }
+.tl-text { white-space: pre; }
+.tl-lyric { text-align: center; width: max-content;}
+.tl-inner { text-align: inherit; }
+.tl-word { white-space: nowrap; }
+.tl-char { display: inline-block; white-space: pre; }
+.tl-audio { width: 0; height: 0; overflow: hidden; }
+.tl-background { width: 100%; height: 100%; z-index: -1; }
+@keyframes tl-fade { from { opacity: 0 } }
+@keyframes tl-spin { from { rotate: 0deg } to { rotate: 360deg } }
+@keyframes tl-slide-up { from { translate: 0 50px; opacity: 0 } }
+@keyframes tl-slide-right { from { translate: 100px 0; opacity: 0 } }
+@keyframes tl-phase { to { --tl-phase: 360deg } }
+.tl-silk { --silk-amp: 50px; --silk-step: 30deg; --silk-tilt: .35; }
+.tl-silk > .tl-inner { animation: tl-phase 5s linear infinite; }
+.tl-silk .tl-char {
+  translate: 0 calc(sin(var(--tl-phase) + var(--i) * var(--silk-step)) * var(--silk-amp));
+  rotate: atan(cos(var(--tl-phase) + var(--i) * var(--silk-step)) * var(--silk-tilt));
+}
+
+/* Container ẩn dùng khi export (engine tạo bằng JS, gán class này).
+   Nằm ngoài màn hình nhưng vẫn có layout (display:none sẽ làm mất layout/animation). */
+.tl-export-host {
+    position: fixed;
+    left: -200000px;
+    top: 0;
+    pointer-events: none;
+}

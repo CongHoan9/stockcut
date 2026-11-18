@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+
+<html lang="vi">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="darkreader-lock"/>
+<title>StockCut</title>
+<link href="data:," rel="icon"/>
+<!-- Reload Shield: Chống tự động reload khi lưu file project/lyrics trên mọi môi trường -->
+<script src="js/reload-shield.js"></script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;600;700&amp;family=Caveat:wght@400;700&amp;family=Dancing+Script:wght@400;700&amp;family=Great+Vibes&amp;family=Pacifico&amp;family=Satisfy&amp;family=Tangerine:wght@400;700&amp;family=Montserrat:wght@400;700;900&amp;family=Anton&amp;family=Bebas+Neue&amp;family=Playfair+Display:wght@400;700;900&amp;family=Cinzel:wght@700&amp;family=Orbitron:wght@700;900&amp;family=Righteous&amp;family=Lobster&amp;family=Permanent+Marker&amp;family=Abril+Fatface&amp;family=Oswald:wght@500;700&amp;family=Alex+Brush&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Antonio:wght@300;400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- CSS — mỗi file một trách nhiệm -->
+<link href="css/fonts.css" rel="stylesheet"/>
+<link href="css/common.css?v=20261118_v5" rel="stylesheet"/> <!-- Thiết kế dùng chung & Master Design System -->
+<link href="css/app.css?v=20261118_v5" rel="stylesheet"/> <!-- Giao diện Studio Master -->
+<link href="css/chat.css?v=20261118_v5" rel="stylesheet"/>
+<link href="css/timeline.css" rel="stylesheet"/> <!-- CSS nền của timeline engine -->
+<link href="css/legacy-lyrics.css" rel="stylesheet"/> <!-- CSS lyrics/silk cũ (xoá được nếu không dùng) -->
+<link href="css/debug-inspector.css?v=20261118_v5" rel="stylesheet"/> <!-- Bảng điều khiển debug -->
+</head>
+<body>
+<!-- Trang chính (Dashboard View) theo ảnh media_1793799616513_f1f9c8d1.png -->
+<div class="dashboard-view" id="dashboard-view" style="display: none;">
+<!-- Sidebar trái của Dashboard -->
+<aside class="dash-sidebar">
+<div class="dash-brand-row">
+<div class="dash-logo-icon">
+<svg fill="none" height="22" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24" width="22">
+<polygon points="5 3 19 12 5 21 5 3"></polygon>
+</svg>
+</div>
+<span class="dash-brand-title">StockCut</span>
+</div>
+<button class="dash-create-btn" id="dash-create-new-btn" type="button">
+<span class="dash-create-plus">+</span>
+<span>Create new</span>
+</button>
+<nav class="dash-nav-menu">
+<button class="dash-nav-item active" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><rect height="20" rx="2" width="20" x="2" y="2"></rect><line x1="7" x2="7" y1="2" y2="22"></line><line x1="17" x2="17" y1="2" y2="22"></line><line x1="2" x2="22" y1="12" y2="12"></line></svg>
+<span>Video Editor</span>
+</button>
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" x2="12" y1="19" y2="23"></line><line x1="8" x2="16" y1="23" y2="23"></line></svg>
+<span>Voice Studio</span>
+</button>
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
+<span>All tools</span>
+</button>
+</nav>
+<div class="dash-nav-section-title">Templates &amp; projects</div>
+<nav class="dash-nav-menu">
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><rect height="18" rx="2" width="18" x="3" y="3"></rect><path d="M3 9h18"></path><path d="M9 21V9"></path></svg>
+<span>Templates</span>
+</button>
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+<span>Smart Insights</span>
+</button>
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+<span>Library</span>
+</button>
+<button class="dash-nav-item" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>
+<span>Share and schedule</span>
+</button>
+</nav>
+<div class="dash-nav-section-title">Spaces</div>
+<div class="dash-spaces-box">
+<div class="dash-space-pill active">
+<span class="dash-space-avatar">U</span>
+<div class="dash-space-text">
+<span class="dash-space-name">user122579214827...</span>
+<span class="dash-space-desc">Default space</span>
+</div>
+</div>
+<button class="dash-add-space-btn" type="button">+ Create new space</button>
+</div>
+</aside>
+<!-- Nội dung chính của Dashboard -->
+<main class="dash-main">
+<header class="dash-header">
+<div class="dash-header-space-title">
+<span class="dash-title-bold">user1225792148275's space</span>
+<span class="dash-quota-tag">0B / 5GB Upgrade &gt;</span>
+</div>
+<div aria-hidden="true" class="dash-spacer"></div>
+<div class="dash-header-actions">
+<button class="dash-invite-btn" type="button">Invite members</button>
+<button class="dash-icon-btn" title="Settings" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+</button>
+</div>
+</header>
+<!-- 3 Action Cards hàng trên cùng -->
+<div class="dash-action-cards">
+<button class="dash-card dash-card-video" id="dash-create-video-btn" type="button">
+<div class="dash-card-icon">
+<svg fill="none" height="22" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="22"><rect height="20" rx="2" width="20" x="2" y="2"></rect><line x1="7" x2="7" y1="2" y2="22"></line><line x1="17" x2="17" y1="2" y2="22"></line><line x1="2" x2="22" y1="12" y2="12"></line></svg>
+</div>
+<span class="dash-card-title">Create video</span>
+<span class="dash-card-badge">+</span>
+</button>
+<button class="dash-card dash-card-image" id="dash-create-image-btn" type="button">
+<div class="dash-card-icon">
+<svg fill="none" height="22" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="22"><rect height="18" rx="2" width="18" x="3" y="3"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+</div>
+<span class="dash-card-title">Create image</span>
+<span class="dash-card-badge">+</span>
+</button>
+<button class="dash-card dash-card-brand" type="button">
+<div class="dash-card-icon">
+<svg fill="none" height="22" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="22"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+</div>
+<span class="dash-card-title">Brand kit</span>
+<span class="dash-card-tag">Free</span>
+</button>
+</div>
+<!-- Toolbar: Upload media | New folder | Trash | All | Date modified -->
+<div class="dash-toolbar">
+<div class="dash-toolbar-left">
+<button class="dash-tool-btn dash-upload-btn" id="dash-upload-media-btn" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" x2="12" y1="3" y2="15"></line></svg>
+<span>Upload media</span>
+</button>
+<button class="dash-tool-btn" id="dash-open-folder-btn" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path></svg>
+<span>New folder</span>
+</button>
+<button class="dash-tool-btn" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="15"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+<span>Trash</span>
+</button>
+</div>
+<div aria-hidden="true" class="dash-spacer"></div>
+<div class="dash-toolbar-right">
+<span class="dash-filter-item">All</span>
+<span class="dash-filter-item">Date modified</span>
+</div>
+</div>
+<!-- Section Projects -->
+<div class="dash-section">
+<h2 class="dash-section-title">Projects</h2>
+<div class="dash-items-grid">
+<div class="dash-project-card" id="dash-project-card">
+<div class="dash-card-thumb">
+<img alt="Thumbnail" class="dash-thumb-img" onerror="this.style.display='none';" src="Asset/image/godzilla.jpg"/>
+<div class="dash-thumb-placeholder">Project Preview</div>
+</div>
+<div class="dash-card-meta">
+<span class="dash-card-name" id="dash-project-name">202611042014</span>
+<span class="dash-card-time">Created 25 min ago</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Materials -->
+<div class="dash-section">
+<h2 class="dash-section-title">Materials</h2>
+<div class="dash-items-grid">
+<div class="dash-project-card dash-material-card">
+<div class="dash-card-thumb">
+<img alt="godzilla.jpg" class="dash-thumb-img" onerror="this.style.display='none';" src="Asset/image/godzilla.jpg"/>
+<div class="dash-thumb-placeholder">godzilla.jpg</div>
+</div>
+<div class="dash-card-meta">
+<span class="dash-card-name">godzilla.jpg</span>
+<span class="dash-card-time">Uploaded 24 min ago</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Khu vực chính: Activity Rail | Master Header | Side Panel | Workspace | JSON Editor -->
+<div class="main-container" id="studio-view">
+<!-- 1. Cột 1: Activity Rail (Rộng 60px, Logo 60x60px ở đỉnh, khoảng cách 8px và các nút 60x60px) -->
+<nav aria-label="Activity Rail" class="activity-bar" id="activity-bar">
+<!-- Header Cột 1: Nút Logo 60x60px ở góc trên cùng: Click để quay về trang Dashboard chính -->
+<button class="activity-logo-btn" id="activity-logo-btn" title="Go back to homepage" type="button">
+<svg fill="none" height="26" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24" width="26">
+<polygon points="5 3 19 12 5 21 5 3"></polygon>
+</svg>
+</button>
+<!-- Nhóm nút điều hướng dọc liền mạch, zero gap (Media | Agent | Audio | Text | Effect - chuẩn 60x60px) -->
+<div class="activity-nav-group">
+<button class="activity-btn active" id="act-media-btn" title="Media (Video / Image)" type="button">
+<svg class="activity-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
+<rect height="18" rx="3" width="18" x="3" y="3"></rect>
+<line x1="3" x2="21" y1="12" y2="12"></line>
+<line x1="12" x2="12" y1="3" y2="21"></line>
+</svg>
+<span class="activity-lbl">Media</span>
+</button>
+<button class="activity-btn" id="act-agent-btn" title="BUNE Agent" type="button">
+<svg class="activity-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
+<rect height="13" rx="3" width="18" x="3" y="6"></rect>
+<line x1="12" x2="12" y1="2" y2="6"></line>
+<circle cx="8.5" cy="12.5" fill="currentColor" r="1.5"></circle>
+<circle cx="15.5" cy="12.5" fill="currentColor" r="1.5"></circle>
+</svg>
+<span class="activity-lbl">Agent</span>
+</button>
+<button class="activity-btn" id="act-audio-btn" title="Audio (Tracks / Sounds)" type="button">
+<svg class="activity-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
+<path d="M9 18V5l12-2v13"></path>
+<circle cx="6" cy="18" r="3"></circle>
+<circle cx="18" cy="16" r="3"></circle>
+</svg>
+<span class="activity-lbl">Audio</span>
+</button>
+<button class="activity-btn" id="act-text-btn" title="Text (Fonts / Titles)" type="button">
+<svg class="activity-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
+<polyline points="4 7 4 4 20 4 20 7"></polyline>
+<line x1="9" x2="15" y1="20" y2="20"></line>
+<line x1="12" x2="12" y1="4" y2="20"></line>
+</svg>
+<span class="activity-lbl">Text</span>
+</button>
+<button class="activity-btn" id="act-effect-btn" title="Effects (Filters / Shaders)" type="button">
+<svg class="activity-icon" fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="20">
+<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+</svg>
+<span class="activity-lbl">Effect</span>
+</button>
+</div>
+<!-- Nhóm nút góc dưới: Debug | Settings -->
+<div class="activity-bottom">
+<button class="activity-btn" id="act-debug-btn" title="Bảng điều khiển Debug Telemetry &amp; Cache" type="button">
+<svg class="activity-icon" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18">
+<polyline points="4 17 10 11 4 5"></polyline>
+<line x1="12" x2="20" y1="19" y2="19"></line>
+</svg>
+<span class="activity-lbl">Debug</span>
+</button>
+<button class="activity-btn" id="act-settings-btn" title="Cài đặt hệ thống (Settings)" type="button">
+<svg class="activity-icon" fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="18">
+<circle cx="12" cy="12" r="3"></circle>
+<path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+</svg>
+<span class="activity-lbl">Config</span>
+</button>
+</div>
+</nav>
+<!-- Header Cột 3 (Studio Header bên trên Workspace: Grid 6 cột phẳng [max-content, 1fr, max, max, max, max]) -->
+<!-- 2. Cột 2: Side Panel với Header Cột 2 riêng biệt (cao 60px) & Panes chuyển đổi động -->
+<aside aria-label="Side Panel" class="side-panel dock-panel" id="side-panel">
+<!-- Header riêng của Cột 2: Đảm nhiệm nhiều việc, mỗi tab có header riêng chuẩn cao 60px -->
+<header class="side-panel-header dock-header" id="side-panel-header">
+<!-- 1. Header khi Media active: Avatar U + Space Title + 1fr Spacer + Menu button -->
+<div class="col2-hdr-pane active" id="col2-hdr-media">
+<div class="col2-space-pill" id="col2-space-pill" title="Workspace">
+<span class="col2-space-avatar">U</span>
+<span class="col2-space-title" id="col2-space-title">user1225792148275's space</span>
+<svg class="col2-chevron-icon" fill="none" height="12" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="12"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</div>
+<div aria-hidden="true" class="col2-hdr-spacer"></div>
+<button class="col2-menu-btn" id="col2-menu-btn" title="Space menu" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="18"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
+</button>
+</div>
+<!-- 2. Header khi BUNE Agent active: label BUNE Agent + 1fr Spacer + AI Assistant badge -->
+<div class="col2-hdr-pane" id="col2-hdr-agent" style="display:none;">
+<div class="col2-agent-title-wrap">
+<span class="col2-agent-dot"></span>
+<span class="col2-agent-title">BUNE Agent</span>
+</div>
+<div aria-hidden="true" class="col2-hdr-spacer"></div>
+<div class="col2-agent-badge">AI Assistant</div>
+</div>
+<!-- 2. Header khi Audio active: Music | Sound (Style mới chiếm trọn chiều dài) -->
+<div class="col2-hdr-pane" id="col2-hdr-audio" style="display:none;">
+<div class="col2-hdr-nav">
+<button class="col2-hdr-tab active" data-col2-tab="audio-music" type="button">Music</button>
+<button class="col2-hdr-tab" data-col2-tab="audio-sfx" type="button">Sound</button>
+</div>
+</div>
+<!-- 3. Header khi Text active: Templates | Font Family (Style mới chiếm trọn chiều dài) -->
+<div class="col2-hdr-pane" id="col2-hdr-text" style="display:none;">
+<div class="col2-hdr-nav">
+<button class="col2-hdr-tab active" data-col2-tab="text-templates" type="button">Templates</button>
+<button class="col2-hdr-tab" data-col2-tab="text-fonts" type="button">Font Family</button>
+</div>
+</div>
+<!-- 4. Header khi Effect active: Video effects | Body effects (Style mới chiếm trọn chiều dài) -->
+<div class="col2-hdr-pane" id="col2-hdr-effect" style="display:none;">
+<div class="col2-hdr-nav">
+<button class="col2-hdr-tab active" data-col2-tab="effect-video" type="button">Video effects</button>
+<button class="col2-hdr-tab" data-col2-tab="effect-body" type="button">Body effects</button>
+</div>
+</div>
+<!-- 5. Header khi Debug active: Telemetry | Cache (Style mới chiếm trọn chiều dài) -->
+<div class="col2-hdr-pane" id="col2-hdr-debug" style="display:none;">
+<div class="col2-hdr-nav">
+<button class="col2-hdr-tab active" data-col2-tab="debug-telemetry" type="button">Telemetry</button>
+<button class="col2-hdr-tab" data-col2-tab="debug-cache" type="button">Cache</button>
+</div>
+</div>
+</header>
+<!-- Vùng nội dung Cột 2 bên dưới Header 60px -->
+<div class="side-panel-body dock-body" id="side-panel-body">
+<!-- 1. PANE MEDIA: Thuần túy hiển thị Video / Image Assets -->
+<div class="side-pane active" id="pane-media">
+<!-- VÙNG 2: CHỨC NĂNG (Gồm Hàng 1 Textbox Search full width, Hàng 2 Sub-tabs Video | Image theo đúng ảnh chuẩn) -->
+<div class="pane-func-section dock-func-section">
+<!-- Hàng 1: Search Box riêng biệt full width -->
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="media-search-input" placeholder="Search media..." type="text"/>
+</div>
+</div>
+<!-- Hàng 2: Sub-tabs Video | Image -->
+<div class="pane-tabs-row dock-tabs-row">
+<div class="tab-nav media-sub-nav dock-tabs-nav">
+<button class="tab-btn media-sub-btn active dock-sub-btn" data-sub="video" type="button">Video</button>
+<span class="tab-sep">|</span>
+<button class="tab-btn media-sub-btn dock-sub-btn" data-sub="image" type="button">Image</button>
+</div>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN (Scrollbar sát lề 0px) -->
+<!-- Tab con Video -->
+<div class="media-sub-pane col2-sub-pane active" id="media-sub-video">
+<div class="pane-scroll-area">
+<div class="media-empty-state" id="media-video-empty" style="display:none;"></div>
+<div class="media-grid" id="media-video-grid"></div>
+</div>
+</div>
+<!-- Tab con Image -->
+<div class="media-sub-pane col2-sub-pane" id="media-sub-image" style="display:none;">
+<div class="pane-scroll-area">
+<div class="media-empty-state" id="media-image-empty" style="display:none;"></div>
+<div class="media-grid" id="media-image-grid"></div>
+</div>
+</div>
+</div>
+<!-- 2. PANE AGENT (BUNE Agent riêng biệt với tin nhắn, textbox và disclaimer) -->
+<div class="side-pane" id="pane-agent" style="display:none;">
+<div class="agent-chat-wrapper">
+<!-- Danh sách tin nhắn chat -->
+<div class="agent-message-list" id="message-list">
+<div class="agent-welcome-msg">
+<div class="agent-welcome-badge">BUNE AI</div>
+<div class="agent-welcome-text">Xin chào! Tôi là <b>BUNE Agent</b>. Hãy gửi câu hỏi hoặc mô tả video bạn muốn tạo!</div>
+</div>
+</div>
+<!-- Khung soạn thảo tin nhắn chat -->
+<div class="agent-composer">
+<div class="agent-input-box">
+<textarea class="agent-textarea" id="q" placeholder="Nhắn tin cho BUNE Agent…" rows="2"></textarea>
+<div class="agent-input-footer">
+<span class="agent-model-pill">BUNE 1.0 Fast</span>
+<button class="agent-send-btn" disabled="" id="ask" title="Gửi" type="button">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="16">
+<line x1="12" x2="12" y1="19" y2="5"></line>
+<polyline points="5 12 12 5 19 12"></polyline>
+</svg>
+</button>
+</div>
+</div>
+<!-- Dòng nhắc nhở theo yêu cầu -->
+<div class="agent-disclaimer">BUNE là AI và có thể mắc sai lầm</div>
+</div>
+</div>
+</div>
+<!-- 3. PANE AUDIO: Music & Sound Effects với album art từ MP3 detail -->
+<div class="side-pane" id="pane-audio" style="display:none;">
+<!-- Tab con 1: Music -->
+<div class="audio-sub-pane col2-sub-pane active" id="audio-sub-music">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<!-- Hàng 1: Search Box riêng biệt -->
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="audio-search-input" placeholder="Search music..." type="text"/>
+</div>
+</div>
+<!-- Hàng 2: Quick Filter Chips -->
+<div class="audio-quick-chips">
+<button class="audio-chip active" data-genre="all" type="button">All</button>
+<button class="audio-chip" data-genre="phonk" type="button">Phonk</button>
+<button class="audio-chip" data-genre="bgm" type="button">Background music</button>
+<button class="audio-chip" data-genre="pop" type="button">Pop</button>
+<button class="audio-chip" data-genre="chill" type="button">Chill</button>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT (Categories + Recommended Tracks) -->
+<div class="pane-scroll-area">
+<div class="pane-section-header">
+<span class="pane-section-title">Categories</span>
+<span class="pane-section-link">View all</span>
+</div>
+<div class="audio-categories-grid">
+<div class="audio-cat-card">
+<span class="audio-cat-title">RECOMMEND</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">POP</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">R&amp;B</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">HEALING</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">WARM</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">HIGH TEMPO</span>
+</div>
+</div>
+<div class="pane-section-header" style="margin-top: 14px;">
+<span class="pane-section-title">Recommended</span>
+</div>
+<div class="media-audio-list" id="media-audio-list"></div>
+</div>
+</div>
+<!-- Tab con 2: Sound effects -->
+<div class="audio-sub-pane col2-sub-pane" id="audio-sub-sfx">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<!-- Hàng 1: Search Box riêng biệt -->
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="sfx-search-input" placeholder="Search sound effects..." type="text"/>
+</div>
+</div>
+<!-- Hàng 2: Quick Tags -->
+<div class="audio-quick-chips">
+<button class="audio-chip active" data-sfx="all" type="button">All</button>
+<button class="audio-chip" data-sfx="boom" type="button">Boom</button>
+<button class="audio-chip" data-sfx="woosh" type="button">Woosh</button>
+<button class="audio-chip" data-sfx="click" type="button">Click</button>
+<button class="audio-chip" data-sfx="transition" type="button">Transition</button>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT (SFX Categories + Recommended SFX) -->
+<div class="pane-scroll-area">
+<div class="pane-section-header">
+<span class="pane-section-title">Categories</span>
+<span class="pane-section-link">View all</span>
+</div>
+<div class="audio-categories-grid">
+<div class="audio-cat-card">
+<span class="audio-cat-title">PERFORMANCE</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">LAUGH</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">FIGHT</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">MECHANICAL</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">MAGIC</span>
+</div>
+<div class="audio-cat-card">
+<span class="audio-cat-title">INSTRUMENT</span>
+</div>
+</div>
+<div class="pane-section-header" style="margin-top: 14px;">
+<span class="pane-section-title">Recommended</span>
+</div>
+<div class="media-audio-list" id="media-sfx-list"></div>
+</div>
+</div>
+</div>
+<!-- 4. PANE TEXT: Basic + Templates + Font Family ("ART" Grid) -->
+<div class="side-pane" id="pane-text" style="display:none;">
+<!-- Sub-pane 1: Templates -->
+<div class="text-sub-pane col2-sub-pane active" id="text-sub-templates">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<!-- Hàng 1: Basic section (Heading / Body) -->
+<div class="text-basic-section">
+<div class="pane-section-title">Basic</div>
+<div class="text-add-buttons">
+<button class="text-add-btn text-add-heading" id="btn-add-heading" title="Click để thêm Heading (cỡ lớn)" type="button">
+<span class="text-heading-label">Add heading</span>
+</button>
+<button class="text-add-btn text-add-body" id="btn-add-body" title="Click để thêm Body text (cỡ vừa)" type="button">
+<span class="text-body-label">Add body text</span>
+</button>
+</div>
+</div>
+<!-- Hàng 2: Filter bar -->
+<div class="text-filter-bar">
+<button class="text-pill-btn active" type="button">All</button>
+<button class="text-pill-btn" type="button">Commercial</button>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT -->
+<div class="pane-scroll-area">
+<div class="pane-section-header">
+<span class="pane-section-title">Trending</span>
+<span class="pane-section-link">View all</span>
+</div>
+<div class="text-templates-grid" id="text-templates-grid"></div>
+<div class="pane-section-header" style="margin-top: 14px;">
+<span class="pane-section-title">B.Duck</span>
+<span class="pane-section-link">View all</span>
+</div>
+<div class="text-templates-grid" id="text-bduck-grid"></div>
+</div>
+</div>
+<!-- Sub-pane 2: Font Family đọc trực tiếp từ Asset/font dạng thẻ như effect -->
+<div class="text-sub-pane col2-sub-pane" id="text-sub-fonts">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<!-- Hàng 1: Search Box riêng biệt -->
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="font-search-input" placeholder="Search font styles..." type="text"/>
+</div>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT -->
+<div class="pane-scroll-area">
+<div class="pane-section-header">
+<span class="pane-section-title">Font Family</span>
+</div>
+<div class="font-family-grid" id="font-list-container"></div>
+</div>
+</div>
+</div>
+<!-- 5. PANE EFFECT: Video Effects & Body Effects (2 sub-tabs riêng biệt) -->
+<div class="side-pane" id="pane-effect" style="display:none;">
+<!-- Sub-pane 1: Video effects -->
+<div class="effect-sub-pane col2-sub-pane active" id="effect-sub-video">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="effect-search-input" placeholder="Search effects..." type="text"/>
+</div>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT -->
+<div class="pane-scroll-area">
+<div id="effect-list-container"></div>
+</div>
+</div>
+<!-- Sub-pane 2: Body effects -->
+<div class="effect-sub-pane col2-sub-pane" id="effect-sub-body">
+<!-- VÙNG 2: CHỨC NĂNG -->
+<div class="pane-func-section dock-func-section">
+<div class="pane-search-row dock-search-row">
+<div class="side-search-wrap dock-search-box">
+<svg class="side-search-icon dock-search-icon" fill="none" height="14" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="14"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input class="side-search-input dock-search-input" id="body-effect-search-input" placeholder="Search body effects..." type="text"/>
+</div>
+</div>
+</div>
+<!-- VÙNG 3: VÙNG CUỘN DUY NHẤT -->
+<div class="pane-scroll-area">
+<div id="body-effect-list-container"></div>
+</div>
+</div>
+</div>
+<!-- 6. PANE DEBUG: Telemetry & Cache (2 sub-tabs riêng biệt) -->
+<div class="side-pane" id="pane-debug" style="display:none;">
+<!-- Sub-pane 1: Telemetry -->
+<div class="debug-sub-pane col2-sub-pane active" id="debug-sub-telemetry">
+<div class="pane-scroll-area">
+<div class="debug-pane-body">
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">FPS:</span>
+<b class="debug-stat-num" id="side-dbg-fps" style="color: #10b981;">60.0</b>
+<span class="debug-stat-sub-info">FPS (16.6ms)</span>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">CPU:</span>
+<b class="debug-stat-num" id="side-dbg-cpu">0.40</b>
+<span class="debug-stat-sub-info">ms (2.4%)</span>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">MODE:</span>
+<span class="debug-stat-mode-group">
+<b class="debug-mode-pill dirty">DIRTY</b>
+<span class="debug-stat-sub">RUNS</span>
+</span>
+<span class="debug-stat-sub-info">(0 rects)</span>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">FRAME:</span>
+<b class="debug-stat-num" id="side-dbg-frame">00:00.000</b>
+<span class="debug-stat-sub-info">(F0)</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sub-pane 2: Cache -->
+<div class="debug-sub-pane col2-sub-pane" id="debug-sub-cache">
+<div class="pane-scroll-area">
+<div class="debug-pane-body">
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">ZOBRIST HASH:</span>
+<span class="debug-zobrist-tag" id="side-dbg-zobrist" style="margin-left: auto; font-family: var(--font-mono); color: #06b6d4;">0x0000000000000000</span>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">TT HITS:</span>
+<b class="debug-stat-num" id="side-dbg-hits" style="color: #10b981; margin-left: auto;">0</b>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">TT MISSES:</span>
+<b class="debug-stat-num" id="side-dbg-misses" style="color: #f59e0b; margin-left: auto;">0</b>
+</div>
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">FULL REDRAW:</span>
+<b class="debug-stat-num" id="side-dbg-full" style="color: #f97316; margin-left: auto;">0</b>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div> <!-- đóng #side-panel-body -->
+</aside><div class="stage-column" id="stage-column"><header class="studio-header" id="studio-header">
+<!-- Col 1: max-content - Tên dự án (Cloud icon + Project Title + chevron) -->
+<div class="header-project-pill" id="header-project-pill" title="Project title">
+<svg class="header-cloud-icon" fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16">
+<path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"></path>
+</svg>
+<span class="header-project-title" id="header-project-title">Project 1</span>
+<svg class="header-chevron-icon" fill="none" height="12" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="12">
+<polyline points="6 9 12 15 18 9"></polyline>
+</svg>
+</div>
+<!-- Col 2: 1fr - Vùng trống co giãn tạo khoảng cách đẩy các nút sang lề phải -->
+<div aria-hidden="true" class="header-spacer"></div>
+<!-- Col 3: max-content - Nút Con trỏ / Pointer Tool -->
+<button class="viewport-tool-btn active" id="tool-pointer-btn" title="Chế độ con trỏ (Pointer - V)" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="15">
+<path d="M4 4l7.07 17 2.51-7.39L21 11.07 4 4z"></path>
+</svg>
+</button>
+<!-- Col 4: max-content - Nút Bàn tay / Hand Tool -->
+<button class="viewport-tool-btn" id="tool-hand-btn" title="Chế độ bàn tay (Hand / Pan - H hoặc giữ Spacebar)" type="button">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="16">
+<path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v3"></path>
+<path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"></path>
+<path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+<path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"></path>
+</svg>
+</button>
+<!-- Col 5: max-content - Nút 3 chấm Settings -->
+<button class="header-more-btn" id="header-more-btn" title="More options" type="button">
+<svg fill="none" height="16" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24" width="16">
+<circle cx="12" cy="12" r="1.5"></circle>
+<circle cx="19" cy="12" r="1.5"></circle>
+<circle cx="5" cy="12" r="1.5"></circle>
+</svg>
+</button>
+<!-- Col 6: max-content - Nút Export -->
+<button class="header-btn header-export-btn" id="export-btn" title="Cấu hình và xuất video MP4" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" viewbox="0 0 24 24" width="15">
+<path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+<polyline points="7 10 12 15 17 10"></polyline>
+<line x1="12" x2="12" y1="15" y2="3"></line>
+</svg>
+<span>EXPORT</span>
+</button>
+<!-- Các input ẩn -->
+<button id="load-btn" style="display:none;" type="button"></button>
+<input directory="" id="fallback-folder-input" multiple="" style="display:none" type="file" webkitdirectory=""/>
+</header><div class="action-drawer" id="export-drawer">
+<div class="export-drawer-layout">
+<!-- CỘT TRÁI: CÁC THIẾT LẬP KÈM LABEL VÀ COMBOBOX STYLE NHƯ ẢNH -->
+<div class="export-controls-col">
+<!-- 1. Độ phân giải -->
+<div class="export-form-row">
+<label class="export-field-label drawer-label" for="export-res">Resolution:</label>
+<select class="export-select-inline" id="export-res" title="Độ phân giải video">
+<option value="720">720p (HD)</option>
+<option selected="" value="1080">1080p (FullHD)</option>
+<option value="1440">1440p (2K)</option>
+<option value="2160">2160p (4K Ultra HD)</option>
+<option value="4320">4320p (8K Ultra HD)</option>
+<option value="8640">8640p (16K IMAX)</option>
+</select>
+</div>
+<!-- 2. Framerate -->
+<div class="export-form-row">
+<label class="export-field-label drawer-label" for="export-fps">Framerate:</label>
+<select class="export-select-inline" id="export-fps" title="Framerate (FPS)">
+<option value="30">30 FPS</option>
+<option selected="" value="60">60 FPS</option>
+<option value="120">120 FPS</option>
+<option value="240">240 FPS</option>
+</select>
+</div>
+<!-- 3. Bitrate -->
+<div class="export-form-row">
+<label class="export-field-label drawer-label" for="export-bitrate">Bitrate:</label>
+<select class="export-select-inline" id="export-bitrate" title="Export bitrate">
+<option value="5000000">5 Mbps (Light)</option>
+<option value="15000000">15 Mbps (Sharp)</option>
+<option selected="" value="30000000">30 Mbps (Max)</option>
+</select>
+</div>
+<!-- 4. Codec -->
+<div class="export-form-row">
+<label class="export-field-label drawer-label" for="export-codec">Codec:</label>
+<select class="export-select-inline" id="export-codec" title="Video Codec">
+<option selected="" value="av1">AV1 (Max Compression)</option>
+<option value="avc">H.264 / AVC (Compatible)</option>
+<option value="hevc">H.265 / HEVC (High Efficiency)</option>
+<option value="vp9">VP9 (Web Optimized)</option>
+</select>
+</div>
+</div>
+<!-- CỘT GIỮA: SPACER TRẢI ĐỀU NGĂN CÁCH (1fr) -->
+<div class="export-col-spacer"></div>
+<!-- CỘT PHẢI: NÚT XUẤT CĂN GÓC DƯỚI PHẢI -->
+<div class="export-action-col">
+<button class="drawer-btn-run btn-run-export" id="start-export-btn" type="button">START EXPORT</button>
+</div>
+</div>
+</div><div class="action-drawer" id="ai-lyrics-drawer">
+<div class="ai-drawer-layout">
+<!-- CỘT TRÁI: 5 DÒNG TÙY CHỌN (GỌN GÀNG, INLINE, KHÔNG VIỀN) -->
+<div class="ai-controls-col">
+<!-- 1. File âm thanh -->
+<div class="ai-form-row ai-row-select">
+<label class="ai-field-label">File âm thanh (<button class="drawer-text-btn" id="ai-choose-file-btn" title="Chọn file âm thanh khác" type="button">Đổi</button>):</label>
+<div class="ai-audio-slot">
+<span class="ai-audio-pill" id="ai-audio-file-name" title="Click để chọn file âm thanh">Đang tìm audio...</span>
+<input accept="audio/*,video/*" id="ai-file-picker" style="display: none;" type="file"/>
+</div>
+</div>
+<!-- 2. Combobox Ngôn ngữ -->
+<div class="ai-form-row ai-row-select">
+<label class="ai-field-label" for="ai-language">Ngôn ngữ nhận diện:</label>
+<select class="ai-select-inline" id="ai-language" title="Ngôn ngữ nhận diện giọng nói">
+<option selected="" value="auto">Tự động phát hiện (Auto)</option>
+<option value="vi">Tiếng Việt</option>
+<option value="en">Tiếng Anh</option>
+<option value="ko">Tiếng Hàn</option>
+<option value="ja">Tiếng Nhật</option>
+<option value="zh">Tiếng Trung</option>
+</select>
+</div>
+<!-- 3. Combobox Model Whisper -->
+<div class="ai-form-row ai-row-select">
+<label class="ai-field-label" for="ai-model">Mô hình Whisper AI:</label>
+<select class="ai-select-inline" id="ai-model" title="Mô hình Whisper AI">
+<option selected="" value="small">Small (Chuẩn xác &amp; sâu)</option>
+<option value="base">Base (Rất nhanh &amp; nhẹ)</option>
+</select>
+</div>
+<!-- 4. Checkbox Tách vocal -->
+<div class="ai-form-row">
+<label class="ai-checkbox-inline" title="Tách giọng hát riêng biệt khỏi nhạc nền bằng Demucs AI">
+<input checked="" id="ai-separate-vocals" type="checkbox"/>
+<span class="ai-check-text">Tách Vocal sạch bằng AI (loại bỏ nhạc nền)</span>
+</label>
+</div>
+<!-- 5. Checkbox Chỉ cập nhật lyric -->
+<div class="ai-form-row">
+<label class="ai-checkbox-inline" title="Chỉ chèn các câu lyric mới vào JSON hiện tại, bảo toàn toàn bộ hiệu ứng và timeline khác">
+<input checked="" id="ai-append-only" type="checkbox"/>
+<span class="ai-check-text">Chỉ cập nhật lyric vào JSON (giữ nguyên hiệu ứng)</span>
+</label>
+</div>
+</div>
+<!-- CỘT PHẢI: KHUNG NHẬP LYRIC (ĐỘ CAO BẰNG CỘT TRÁI) -->
+<div class="ai-lyrics-col">
+<textarea class="ai-lyrics-textarea" id="ai-lyrics-text" placeholder="Nhập / chỉnh sửa lyrics.txt (mỗi dòng một câu, Ctrl+S để lưu)...
+                            Oh ooh
+                            whoa
+                        oh whoa"></textarea>
+</div>
+<!-- HÀNG DƯỚI: DỒN BUTTON XUỐNG DƯỚI, CĂN PHẢI -->
+<div class="ai-action-bar">
+<div class="drawer-error-line" id="ai-error-msg"></div>
+<button class="drawer-btn-run btn-run-ai" id="ai-start-btn" type="button">Bắt đầu sinh Lyrics</button>
+</div>
+<!-- THANH TIẾN TRÌNH NGANG (CHỈ HIỂN THỊ KHI ĐANG CHẠY THEO YÊU CẦU CỦA USER) -->
+<div class="ai-progress-container" id="ai-progress-container" style="display: none;">
+<div class="ai-progress-info">
+<span class="ai-progress-status" id="ai-progress-status">Đang xử lý...</span>
+<span class="ai-progress-percent" id="ai-progress-percent">0%</span>
+</div>
+<div class="ai-progress-track">
+<div class="ai-progress-fill" id="ai-progress-fill"></div>
+</div>
+</div>
+</div>
+</div><div class="workspace">
+<!-- Nút ẩn tương thích ngược cho JS gọi .click() nếu có -->
+<button id="ai-lyrics-btn" style="display:none;" type="button"></button>
+<button id="media-btn" style="display:none;" type="button"></button>
+<!-- Widget ??i T? L? Khung H?nh (Aspect Ratio Widget: T? l? th?t & SVG d?y d?n ??ng b?) -->
+<div class="aspect-ratio-widget" id="aspect-ratio-widget">
+<button class="aspect-ratio-btn" id="aspect-ratio-btn" title="Thay đổi tỉ lệ khung hình" type="button">
+<span class="ratio-btn-icon" id="ratio-btn-icon">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="14" stroke-dasharray="3 2" width="19" x="2.5" y="5"></rect>
+</svg>
+</span>
+<span class="ratio-current-text" id="ratio-current-text">Orig</span>
+</button>
+<div class="aspect-ratio-panel" id="aspect-ratio-panel">
+<div class="ratio-option active" data-ratio="original">
+<span class="ratio-opt-box ratio-box-orig">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="14" stroke-dasharray="3 2" width="19" x="2.5" y="5"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">Original aspect ratio</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-divider"></div>
+<div class="ratio-option" data-ratio="16:9">
+<span class="ratio-opt-box ratio-box-16-9">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="11.25" width="20" x="2" y="6.375"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">16:9</span>
+<span class="ratio-opt-sub">YouTube ads</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-option" data-ratio="4:3">
+<span class="ratio-opt-box ratio-box-4-3">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="13.5" width="18" x="3" y="5.25"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">4:3</span>
+<span class="ratio-opt-sub">LinkedIn ads, Fac...</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-option" data-ratio="2:1">
+<span class="ratio-opt-box ratio-box-2-1">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="10" width="20" x="2" y="7"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">2:1</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-divider"></div>
+<div class="ratio-option" data-ratio="9:16">
+<span class="ratio-opt-box ratio-box-9-16">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="20" width="11.25" x="6.375" y="2"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">9:16</span>
+<span class="ratio-opt-sub">TikTok, TikTok ads...</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-option" data-ratio="1:1">
+<span class="ratio-opt-box ratio-box-1-1">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="15" width="15" x="4.5" y="4.5"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">1:1</span>
+<span class="ratio-opt-sub">Instagram posts</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+<div class="ratio-option" data-ratio="3:4">
+<span class="ratio-opt-box ratio-box-3-4">
+<svg class="ratio-icon" fill="none" height="22" stroke="currentColor" stroke-width="1.8" viewbox="0 0 24 24" width="22">
+<rect height="18" width="13.5" x="5.25" y="3"></rect>
+</svg>
+</span>
+<div class="ratio-opt-info">
+<span class="ratio-opt-title">3:4</span>
+</div>
+<svg class="ratio-check-icon" fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><polyline points="20 6 9 17 4 12"></polyline></svg>
+</div>
+</div>
+</div>
+<!-- Action Drawer cho AI Lyrics (Bố trí gọn: Cột trái 5 thiết lập, Cột phải Nhập lyric & Nút bấm, Thanh ngang tiến trình khi chạy) -->
+<!-- Action Drawer cho Export Video (Bố trí theo ảnh: Cột trái các thiết lập có label, Nén HandBrake, Nút xuất góc dưới phải) -->
+<!-- Action Drawer cũ đã được chuyển trực tiếp vào Cột 2 (Side Panel) theo yêu cầu -->
+<div id="media-drawer" style="display:none;"><div class="media-drawer-body"></div></div>
+<!-- Target cho Fullscreen API -->
+<div id="fullscreen-stage">
+<div id="render-viewport">
+<canvas id="engine-canvas"></canvas>
+<svg id="viewport-selection-overlay" class="viewport-selection-overlay" viewBox="0 0 1920 1080" preserveAspectRatio="none" style="display:none;">
+    <rect id="selection-marquee" class="selection-marquee" x="0" y="0" width="0" height="0" style="display:none;"></rect>
+    <path id="selection-outline" class="selection-outline" d=""></path>
+</svg>
+</div>
+<div id="selection-marquee-box" class="selection-marquee-box" style="display:none;"></div>
+</div>
+<div id="timeline-container">
+<!-- BẢNG ĐIỀU KHIỂN & DEBUG STATUS THEME ĐỒNG BỘ -->
+<div class="debug-inspector-panel" id="debug-inspector-panel">
+<!-- Mép trên: thanh resizer kéo chuột (CHỈ mở rộng / thu gọn bằng kéo chuột) -->
+<div class="debug-resizer" id="debug-resizer" title="Kéo lên / xuống để mở rộng hoặc thu gọn">
+<div class="debug-resizer-grip"></div>
+</div>
+<!-- Ngăn kéo mở rộng (Drawer Body trượt lên trên dạng overlay, KHÔNG làm co nhỏ viewport) -->
+<div class="debug-drawer-body" id="debug-drawer-body">
+<!-- Header tách biệt thẳng hàng đồng bộ với media-drawer-header -->
+<div class="debug-drawer-header">
+<div class="tab-nav debug-tabs-nav">
+<button class="tab-btn debug-tab-btn active" data-tab="telemetry" type="button">Telemetry</button>
+<span class="tab-sep">|</span>
+<button class="tab-btn debug-tab-btn" data-tab="effects" type="button">Effects (<span id="dbg-tab-fx-count">0</span>)</button>
+<span class="tab-sep">|</span>
+<button class="tab-btn debug-tab-btn" data-tab="layers" type="button">Layers (<span id="dbg-tab-layers-count">0</span>)</button>
+<span class="tab-sep">|</span>
+<button class="tab-btn debug-tab-btn" data-tab="cache" type="button">Cache</button>
+</div>
+</div>
+<!-- Đường kẻ phân cách đồng bộ với media-header-divider -->
+<div class="debug-drawer-content">
+<!-- TAB 1: Frame & Telemetry — Smart Dashboard Layout (Gọn gàng thông minh, không 3 cột) -->
+<div class="debug-tab-pane active" id="debug-pane-telemetry">
+<div class="debug-smart-dashboard">
+<!-- BỐ CỤC 2 NỬA THEO BẢN VẼ: TRÁI (4 DÒNG THÔNG SỐ) — PHẢI (BIỂU ĐỒ & THANH HẠN MỨC) -->
+<div class="debug-monitor-layout">
+<!-- NỬA TRÁI: 3 DÒNG THÔNG SỐ XẾP DỌC -->
+<div class="debug-monitor-stats">
+<!-- DÒNG 1: TỐC ĐỘ FPS -->
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">FPS:</span>
+<b class="debug-stat-num" id="dbg-fps-val" style="color: #10b981;">60.0</b>
+<span class="debug-stat-sub-info">
+<span class="debug-stat-unit">FPS</span>
+<span class="debug-stat-sub">(<span id="dbg-frametime-val">16.6</span>ms)</span>
+<span id="dbg-fps-status-dot" style="display:none;"></span>
+</span>
+</div>
+<!-- DÒNG 2: TẢI CPU -->
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">CPU:</span>
+<b class="debug-stat-num" id="dbg-cputime-val">0.40</b>
+<span class="debug-stat-sub-info">
+<span class="debug-stat-unit">ms</span>
+<span class="debug-stat-sub" id="dbg-budget-text">(2.4%)</span>
+</span>
+</div>
+<!-- DÒNG 3: CHẾ ĐỘ RENDER -->
+<div class="debug-stat-line">
+<span class="debug-stat-lbl">MODE:</span>
+<span class="debug-stat-mode-group">
+<b class="debug-mode-pill dirty" id="dbg-mode-pill">DIRTY</b>
+<span class="debug-stat-sub" id="dbg-mode-detail">RUNS</span>
+</span>
+<span class="debug-stat-sub-info">
+<span class="debug-stat-sub" id="dbg-mode-stats">(0 rects)</span>
+</span>
+</div>
+</div>
+<!-- NỬA PHẢI: BIỂU ĐỒ ("bieu do") & THANH HẠN MỨC ("thanh han muc") -->
+<div class="debug-monitor-graph-col">
+<div class="debug-graph-header">
+<span class="debug-graph-title">FPS GRAPH</span>
+<div class="debug-graph-stats">
+                                                        AVG: <b id="dbg-fps-avg">60.0</b> <span class="debug-sep">|</span>
+                                                        MIN: <b id="dbg-fps-min">60.0</b> <span class="debug-sep">|</span>
+                                                        MAX: <b id="dbg-fps-max">60.0</b>
+</div>
+</div>
+<div class="debug-canvas-container">
+<canvas class="debug-fps-canvas" id="dbg-fps-canvas"></canvas>
+</div>
+<div class="debug-budget-meter-row">
+<span class="debug-budget-meter-lbl">BUDGET (16.6ms):</span>
+<div class="debug-budget-track">
+<div class="debug-budget-fill" id="dbg-budget-meter" style="width: 2.4%;"></div>
+</div>
+<span class="debug-budget-pct" id="dbg-budget-pct">2.4%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- TAB 2: Effects (Pure CSS Grid — Anti-Jitter, No DOM Shifting) -->
+<div class="debug-tab-pane" id="debug-pane-effects">
+<div class="debug-grid-table">
+<div class="dbg-fx-grid-row dbg-grid-header">
+<div class="dbg-grid-th">#</div>
+<div class="dbg-grid-th">EFFECT</div>
+<div class="dbg-grid-th">Pipeline</div>
+<div class="dbg-grid-th">Z-Index</div>
+<div class="dbg-grid-th">TIME SPAN</div>
+<div class="dbg-grid-th">GROUP</div>
+</div>
+<div class="dbg-grid-body" id="dbg-effects-tbody">
+<div class="dbg-grid-empty">No effects active on this frame</div>
+</div>
+</div>
+</div>
+<!-- TAB 3: Layers (Pure CSS Grid — Anti-Jitter, No DOM Shifting) -->
+<div class="debug-tab-pane" id="debug-pane-layers">
+<div class="debug-grid-table">
+<div class="dbg-layers-grid-row dbg-grid-header">
+<div class="dbg-grid-th">#</div>
+<div class="dbg-grid-th">LAYER ID</div>
+<div class="dbg-grid-th">TYPE</div>
+<div class="dbg-grid-th">Z-Index</div>
+<div class="dbg-grid-th">Bounding Box</div>
+<div class="dbg-grid-th">STATUS</div>
+</div>
+<div class="dbg-grid-body" id="dbg-layers-tbody">
+<div class="dbg-grid-empty">No layers loaded</div>
+</div>
+</div>
+</div>
+<!-- TAB 4: Zobrist & Cache -->
+<div class="debug-tab-pane" id="debug-pane-cache">
+<div class="debug-cache-layout">
+<div class="debug-cache-readouts">
+<div class="debug-stat-line debug-cache-row debug-cache-status-row">
+<span class="debug-stat-lbl debug-cache-lbl">PIXEL RENDER:</span>
+<span class="debug-cache-value">
+<b class="debug-cache-status" id="dbg-pixel-render-state">DIRTY</b>
+<span class="debug-cache-detail" id="dbg-pixel-render-detail">0 RECT | INCREMENTAL</span>
+</span>
+</div>
+<div class="debug-stat-line debug-cache-row debug-cache-status-row">
+<span class="debug-stat-lbl debug-cache-lbl">COMMAND CACHE:</span>
+<span class="debug-cache-value">
+<b class="debug-cache-status" id="dbg-command-cache-state">MISS</b>
+<span class="debug-cache-detail" id="dbg-command-cache-detail">DISPLAY LIST REBUILT</span>
+</span>
+</div>
+<div class="debug-stat-line debug-cache-row">
+<span class="debug-stat-lbl debug-cache-lbl">ZOBRIST:</span>
+<span class="debug-cache-hash" id="dbg-zobrist-hash">0x0000000000000000</span>
+</div>
+</div>
+<div class="debug-cache-summary">
+<div class="debug-cache-heading">
+<span class="debug-cache-heading-title">CACHE PERFORMANCE</span>
+<span class="debug-cache-heading-spacer"></span>
+<span class="debug-cache-hit-label">HIT RATE</span>
+<b id="dbg-cache-hit-rate">--</b>
+</div>
+<div aria-label="Cache and render counts" class="debug-cache-counts">
+<div class="debug-cache-count-row">
+<div class="dbg-cache-col">HIT <b class="dbg-stat-val text-green" id="dbg-tt-hits">0</b></div>
+<div class="dbg-cache-col">MISS <b class="dbg-stat-val text-yellow" id="dbg-tt-misses">0</b></div>
+<div class="dbg-cache-col">SKIP <b class="dbg-stat-val text-cyan" id="dbg-tt-breaker">0</b></div>
+</div>
+<div class="debug-cache-count-row">
+<div class="dbg-cache-col">FULL <b class="dbg-stat-val text-orange" id="dbg-stat-full">0</b></div>
+<div class="dbg-cache-col">NONE <b class="dbg-stat-val text-cyan" id="dbg-stat-none">0</b></div>
+<div class="dbg-cache-col">DIRTY <b class="dbg-stat-val text-green" id="dbg-stat-dirty">0</b></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Status Bar: 2 Cột Grid 1fr 1fr chia đôi màn hình, FPS và Time luôn căn giữa tuyệt đối -->
+<div class="debug-status-bar" id="debug-status-bar">
+<div class="debug-status-col debug-status-col-left">
+<span class="debug-brand-title">DEBUG</span>
+<span class="debug-status-tag is-main" id="debug-chevron" title="Render Context: Main Thread">MAIN</span>
+<div class="dbg-cell dbg-cell-mode">
+<span class="debug-mode-text dirty" id="chip-mode-text">DIRTY</span>
+</div>
+<div class="dbg-cell-spacer"></div>
+<div class="dbg-cell dbg-cell-fps">
+<span class="debug-status-val" id="chip-fps-text"><b id="chip-fps-num" style="color: #10b981; font-weight: 600;">60.0</b> FPS</span>
+<span class="debug-status-sub" id="chip-ms-text">(16.6ms)</span>
+</div>
+</div>
+<div class="debug-status-col debug-status-col-right">
+<div class="dbg-cell dbg-cell-time">
+<span class="debug-status-val" id="chip-time-text">00:00.000</span>
+<span class="debug-status-sub" id="chip-frame-text">F0</span>
+</div>
+<div class="dbg-cell-spacer"></div>
+<div class="dbg-cell dbg-cell-fx">
+<span class="debug-status-lbl">F:</span>
+<span class="debug-status-val" id="chip-fx-text">0</span>
+</div>
+<div class="dbg-cell dbg-cell-layers">
+<span class="debug-status-lbl">L:</span>
+<span class="debug-status-val" id="chip-layers-text">0</span>
+</div>
+<div class="dbg-cell dbg-cell-size">
+<span class="debug-status-val" id="chip-size-text">--</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Waveform timeline -->
+<div id="waveform-container">
+<div id="waveform-inner">
+<canvas id="waveform-canvas"></canvas>
+<div id="waveform-progress"></div>
+</div>
+</div>
+<div class="player-wrapper">
+<div class="player-inner">
+<!-- Controls -->
+<div class="player-controls" id="player-controls">
+<!-- Thanh phát chạy bằng đồng hồ ảo; js/clock.js chỉ mở khoá + gắn sự kiện -->
+<div id="virtual-player">
+<button aria-label="Play / Pause" class="virtual-play-btn" disabled="" id="virtual-play-btn" title="Play / Pause" type="button"></button>
+<span id="virtual-time">0:00 / 0:00</span>
+<input disabled="" id="virtual-seek" max="1000" min="0" type="range" value="0"/>
+</div>
+<select class="speed-select" id="speed-select">
+<option value="1.0">1.0x</option>
+<option value="0.9">0.9x</option>
+<option value="0.8">0.8x</option>
+<option value="0.7">0.7x</option>
+<option value="0.6">0.6x</option>
+<option value="0.5">0.5x</option>
+<option value="0.4">0.4x</option>
+<option value="0.3">0.3x</option>
+<option value="0.2">0.2x</option>
+</select>
+</div>
+<div class="player-note readme-title-bar">
+<div class="readme-col-pad"></div>
+<a class="readme-badge readme-badge-link" href="https://github.com/CongHoan9" rel="noopener noreferrer" target="_blank" title="GitHub @CongHoan9">
+<span class="badge-label">DEV</span>
+<span class="badge-value badge-accent">CongHoan9</span>
+</a>
+<div class="readme-badge">
+<span class="badge-label">CORE</span>
+<span class="badge-value badge-cyan">C++20 WASM</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">STOCKFISH</span>
+<span class="badge-value badge-green">BITBOARD 64-BIT</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">NATRON</span>
+<span class="badge-value badge-blue">RoI SCISSOR</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">PIXIJS V8</span>
+<span class="badge-value badge-amber">VBO BATCHER</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">OLIVE NLE</span>
+<span class="badge-value badge-purple">TEXTURE CACHE</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">OBS STUDIO</span>
+<span class="badge-value badge-teal">DOUBLE BUFFER</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">GALOIS FIELD</span>
+<span class="badge-value badge-fuchsia">POLYNOMIAL GF(2⁶⁴)</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">MONOID</span>
+<span class="badge-value badge-orange">ALGEBRAIC FUSION</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">METAPROGRAMMING</span>
+<span class="badge-value badge-lime">NESTED MARK</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">KINEMATICS</span>
+<span class="badge-value badge-rose">QUADRATIC EASING</span>
+</div>
+<div class="readme-badge">
+<span class="badge-label">HARMONICS</span>
+<span class="badge-value badge-indigo">OSCILLOSCOPE</span>
+</div>
+<div class="readme-col-pad"></div>
+</div>
+</div>
+</div>
+</div>
+</div></div>
+<!-- 4. Cột 3: Workspace (Khung render + Trình phát + Aspect Ratio Widget) -->
+<!-- 5. Cột 4: Editor JSON bên phải ngoài cùng (Row 1 Header: Undo/Redo & Runtime ms; Row 2 Chức năng: Textbox & Tabs; Row 3: JSON content) -->
+<div class="editor-panel dock-panel" id="editor-panel">
+<!-- Header riêng Cột 4 (Grid 4 cột phẳng [max-content, max-content, 1fr, max-content]) -->
+<header class="editor-header dock-header" id="editor-header">
+<!-- Col 1: max-content - Hoàn tác (Undo) -->
+<button class="header-history-btn" disabled="" id="btn-undo" title="Undo" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" viewbox="0 0 24 24" width="18">
+<path d="M3 7v6h6"></path>
+<path d="M21 17a9 9 0 0 0-9-9 9 9 0 0 0-6 2.3L3 13"></path>
+</svg>
+</button>
+<!-- Col 2: max-content - Làm lại (Redo) -->
+<button class="header-history-btn" disabled="" id="btn-redo" title="Redo" type="button">
+<svg fill="none" height="18" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.8" viewbox="0 0 24 24" width="18">
+<path d="M21 7v6h-6"></path>
+<path d="M3 17a9 9 0 0 1 9-9 9 9 0 0 1 6 2.3l3 2.7"></path>
+</svg>
+</button>
+<!-- Col 3: 1fr - Vùng trống co giãn tạo khoảng cách đẩy thời gian sang lề phải -->
+<div aria-hidden="true" class="editor-header-spacer"></div>
+<!-- Col 4: max-content - Runtime ms & Status text -->
+<div class="editor-header-right">
+<span class="header-time-chip" id="time-display">0 ms</span>
+<span class="header-status-text" id="status-text" style="display:none;">Ready</span>
+</div>
+</header>
+<div class="editor-func-section dock-func-section">
+<!-- Hàng 1: Text box tìm kiếm full width -->
+<div class="editor-search-row dock-search-row">
+<div class="json-search-box dock-search-box">
+<svg class="json-search-icon dock-search-icon" fill="none" height="13" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24" width="13"><circle cx="11" cy="11" r="8"></circle><line x1="21" x2="16.65" y1="21" y2="16.65"></line></svg>
+<input autocomplete="off" class="json-search-input dock-search-input" id="json-search-input" placeholder="Search code..." spellcheck="false" type="text"/>
+<span id="json-search-count"></span>
+<div class="json-search-arrows">
+<button class="json-nav-btn" id="json-search-prev-btn" title="Shift+Enter" type="button">
+<svg fill="none" height="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="10"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+<button class="json-nav-btn" id="json-search-next-btn" title="Enter" type="button">
+<svg fill="none" height="10" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewbox="0 0 24 24" width="10"><polyline points="6 9 12 15 18 9"></polyline></svg>
+</button>
+</div>
+</div>
+</div>
+<!-- Hàng 2: Các nút tab Config | Template | Timeline | Style -->
+<div class="editor-tabs-row dock-tabs-row">
+<div class="tab-nav editor-tabs-nav dock-tabs-nav" role="tablist">
+<button aria-selected="false" class="tab-btn editor-tab-btn dock-sub-btn" data-json-tab="config" role="tab" type="button">Config</button>
+<span class="tab-sep">|</span>
+<button aria-selected="false" class="tab-btn editor-tab-btn dock-sub-btn" data-json-tab="template" role="tab" type="button">Template</button>
+<span class="tab-sep">|</span>
+<button aria-selected="true" class="tab-btn editor-tab-btn active dock-sub-btn" data-json-tab="timeline" role="tab" type="button">Timeline</button>
+<span class="tab-sep">|</span>
+<button aria-selected="false" class="tab-btn editor-tab-btn dock-sub-btn" data-json-tab="style" role="tab" type="button">Style</button>
+</div>
+</div>
+</div>
+<div class="json-hl-wrapper" id="json-hl-wrapper">
+<div aria-hidden="true" class="json-gutter-lines" id="json-gutter-lines"><div class="json-gutter-track" id="json-gutter-lines-track"></div></div>
+<div class="json-gutter-folds" id="json-gutter-folds"><div class="json-gutter-track" id="json-gutter-folds-track"></div></div>
+<div class="json-code-col" id="json-code-col">
+<pre aria-hidden="true" class="json-hl-backdrop"></pre>
+<textarea class="json-hl-textarea" id="json-editor" placeholder="JSON content will be displayed here..." spellcheck="false" wrap="off"></textarea>
+</div>
+</div>
+</div>
+</div>
+<!-- Export Overlay (Giao diện xuất video mới: Preview góc vuông + Viền tiến trình + Bảng thông số + Hàng nút footer) -->
+<div class="loading-overlay" id="loading-overlay">
+<div class="export-modal-container">
+<!-- HÀNG TRÊN: PREVIEW GÓC VUÔNG BÊN TRÁI & BẢNG THÔNG SỐ BÊN PHẢI -->
+<div class="export-main-row">
+<!-- Cột trái: Khung hình preview góc vuông bắt trọn mọi góc với viền tiến trình -->
+<div class="export-preview-column">
+<div class="export-viewport-wrapper" id="export-viewport-wrapper">
+<!-- SVG Viền tiến trình góc vuông bao quanh toàn bộ Viewport -->
+<svg class="export-progress-svg" id="export-progress-svg">
+<rect class="export-progress-track" id="export-progress-track"></rect>
+<rect class="export-progress-bar" id="export-progress-bar"></rect>
+</svg>
+<!-- Khung hình preview live góc vuông (không bo tròn, bắt trọn 100% các góc) -->
+<div class="export-viewport-box" id="export-viewport-box">
+<canvas id="export-preview-canvas"></canvas>
+<!-- Badge thời gian sử dụng [time use] ở góc dưới phải khung preview -->
+<div class="export-time-badge" id="export-time-badge">00:00 / 00:00</div>
+</div>
+</div>
+</div>
+<!-- Cột phải: Bảng thông số chi tiết -->
+<div class="export-details-column">
+<div class="export-specs-list">
+<div class="export-spec-item">
+<span class="export-spec-label">Resolution:</span>
+<span class="export-spec-value" id="export-spec-res">--</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">FPS:</span>
+<span class="export-spec-value" id="export-spec-fps">--</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">Algorithm:</span>
+<span class="export-spec-value" id="export-spec-codec">--</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">Bitrate:</span>
+<span class="export-spec-value" id="export-spec-bitrate">--</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">Frames:</span>
+<span class="export-spec-value" id="export-spec-frames">0 / 0 (0%)</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">Remaining:</span>
+<span class="export-spec-value" id="export-spec-eta">--</span>
+</div>
+<div class="export-spec-item">
+<span class="export-spec-label">Elapsed:</span>
+<span class="export-spec-value" id="export-spec-elapsed">00:00</span>
+</div>
+</div>
+</div>
+</div>
+<!-- ĐƯỜNG KẺ NGANG MẢNH MÀU TỐI PHÂN TÁCH THEO PHÁC THẢO CỦA BẠN -->
+<div class="export-divider-line"></div>
+<!-- HÀNG DƯỚI (FOOTER): ĐƯỜNG DẪN LƯU BÊN TRÁI & NÚT TẠM DỪNG/PLAY + HỦY BÊN PHẢI -->
+<div class="export-footer-row">
+<div class="export-save-info">
+<span class="export-save-label">Output path:</span>
+<span class="export-save-path" id="export-save-path">Initializing...</span>
+</div>
+<div class="export-action-group">
+<button class="export-pause-btn" id="export-pause-btn" type="button">Pause</button>
+<button class="export-cancel-btn" id="export-cancel-btn" type="button">Cancel</button>
+</div>
+</div>
+</div>
+<!-- Giữ element ẩn để tương thích ngược với code cũ nếu cần -->
+<div id="export-progress" style="display:none;"></div>
+</div>
+<!-- Canvas ẩn dùng khi export -->
+<canvas id="export-canvas"></canvas>
+<!-- JS: thư viện / legacy -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://unpkg.com/mp4-muxer/build/mp4-muxer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.8/handlebars.min.js"></script>
+<!-- JS: engine (không phụ thuộc UI) -->
+<!-- JS: nền tảng ứng dụng & Quản lý tài nguyên tập trung -->
+<script src="js/resource-system.js?v=20261118_v5"></script> <!-- Trung tâm quản lý tài nguyên toàn hệ thống (Zero-Preload / Memory-Mapped) -->
+<script src="js/property-module.js"></script> <!-- Hệ thống Property đa tầng & Bitmask vô hạn -->
+<script src="js/ui.js?v=20261118_v2"></script> <!-- tham chiếu DOM -->
+<script src="js/templates.js?v=20261031_v8"></script> <!-- Handlebars template engine (.hbs) -->
+<script src="js/state.js?v=20261106_v5"></script> <!-- trạng thái dùng chung -->
+<script src="js/session-db.js?v=20261106_v5"></script> <!-- IndexedDB: nhớ thư mục dự án -->
+<script src="js/stockcut_runtime.js?v=20261106_v7"></script> <!-- Emscripten Stockcut Runtime Factory -->
+<script src="js/wasm-bridge.js?v=20261106_v7"></script> <!-- WebAssembly Bridge & Stockfish Engine -->
+<script src="js/fonts.js?v=20261106_v7"></script> <!-- tải font + danh sách font -->
+<script src="js/render-config.js?v=20261106_v6"></script> <!-- tính renderConfig từ config (Unified Quality & Layout Module) -->
+<script src="js/shared-channel.js?v=20261108_v1"></script> <!-- Zero-Allocation Lock-Free SPSC Shared Memory Channel -->
+<script src="js/canvas-compositor.js?v=20261106_v6"></script> <!-- Native Canvas Compositor Engine (Pha 5) -->
+<script src="js/timeline-engine.js?v=20261106_v6"></script> <!-- Timeline engine (đọc/ghi state) -->
+<!-- JS: tính năng -->
+<script src="js/clock.js?v=20261106_v5"></script> <!-- đồng hồ ảo + thanh phát -->
+<script src="js/preview.js?v=20261106_v5"></script> <!-- vẽ 1 khung preview -->
+<script src="js/viewport.js?v=20261017_v9"></script> <!-- kích thước khung + fullscreen -->
+<script src="js/selection-tool.js?v=20261108_v1"></script> <!-- Chế độ con trỏ chuột Pointer / Marquee Selection & Outline -->
+<script src="js/waveform.js?v=20261025_v10"></script> <!-- sóng âm, zoom, tua -->
+<script src="js/debug-inspector.js?v=20261118_v2"></script> <!-- Bảng điều khiển debug Stockfish -->
+<script src="js/tabs.js?v=20261106_v7"></script> <!-- tab Font/Effect -->
+<script src="js/editor.js?v=20261118_v5"></script> <!-- JSON editor + Ctrl+S -->
+<script type="module">
+        import * as Mediabunny from 'https://esm.sh/mediabunny';
+        window.Mediabunny = Mediabunny;
+        window.mediabunny = Mediabunny;
+    </script>
+<script src="js/ai-lyrics.js?v=20261118_v2"></script> <!-- AI tách vocal & sinh lyrics -->
+<script src="js/export.js?v=20261014_v3"></script> <!-- xuất video -->
+<script src="js/media-drawer.js?v=20261118_v5"></script> <!-- kho tài nguyên media (video, image, audio) -->
+<script src="js/style-drawer.js?v=20261029_v1"></script> <!-- drawer Font / Effect -->
+<script src="js/llm-chat.js?v=20261029_v1"></script> <!-- chat AI qua LLM WASM riêng -->
+<script src="js/project.js?v=20261106_v7"></script> <!-- mở dự án + khôi phục phiên (khởi động) -->
+</body>
+</html>

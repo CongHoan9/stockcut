@@ -1,0 +1,92 @@
+/* ============================================================================
+   fonts.css — @font-face cho các font đi kèm dự án (thư mục font/)
+   Đường dẫn tính từ css/ nên dùng ../Asset/font/
+   ============================================================================ */
+
+@font-face {
+    font-family: 'Signature';
+    src: url('../Asset/font/NVN-Motherland-Signature.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'NVN-Motherland-Signature';
+    src: url('../Asset/font/NVN-Motherland-Signature.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Authoritative';
+    src: url('../Asset/font/SVN-Authoritative.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SVN-Authoritative';
+    src: url('../Asset/font/SVN-Authoritative.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Astronout';
+    src: url('../Asset/font/SVN-Astronout.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'SVN-Astronout';
+    src: url('../Asset/font/SVN-Astronout.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Antonio-VariableFont_wght';
+    src: url('../Asset/font/Antonio-VariableFont_wght.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RobotoCondensed-Light';
+    src: url('../Asset/font/RobotoCondensed-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'RobotoCondensed-Regular';
+    src: url('../Asset/font/RobotoCondensed-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'MinecraftRegular';
+    src: url('../fonts/Minecraft-Regular.otf') format('opentype'),
+         url('../Asset/font/Minecraft-Regular.otf') format('opentype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MinecraftTen';
+    src: url('../fonts/Minecraft-Ten.ttf') format('truetype'),
+         url('../Asset/font/Minecraft-Ten.ttf') format('truetype');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Roboto-VariableFont_wdth';
+    src: url('../Asset/font/Roboto-VariableFont_wdth.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}

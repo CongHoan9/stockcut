@@ -1,0 +1,16 @@
+<div class="media-card" data-path="{{path}}" title="{{name}}{{#if durationText}} ({{durationText}}){{/if}}&#10;Click để thêm vào Timeline">
+    <div class="media-card-thumb-wrap">
+        {{#if isVideo}}
+        <div class="media-placeholder-icon" style="{{#if hasThumb}}display:none;{{/if}}">
+            <span class="media-placeholder-tag">VIDEO</span>
+        </div>
+        <img class="media-card-thumb-img" src="{{thumb}}" alt="{{name}}" loading="lazy" style="{{#unless hasThumb}}display:none;{{/unless}}">
+        <span class="media-card-badge" style="{{#unless durationText}}display:none;{{/unless}}">{{durationText}}</span>
+        {{else}}
+        <img class="media-card-thumb-img" src="{{src}}" alt="{{name}}" loading="lazy">
+        {{/if}}
+    </div>
+    <div class="media-card-info">
+        <div class="media-card-name" title="{{name}}">{{name}}</div>
+    </div>
+</div>

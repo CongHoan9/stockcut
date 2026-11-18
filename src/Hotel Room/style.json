@@ -1,0 +1,97 @@
+[
+ {
+  "type": "style",
+  "start": 0,
+  "end": 3399,
+  "set": [
+   {
+    "type": "background",
+    "background-color": "#000"
+   },
+   {
+    "type": "lyric",
+    "color": "#fff"
+   },
+   {
+    "type": "text",
+    "color": "#fff"
+   }
+  ]
+ },
+ {
+  "type": "style",
+  "start": 3400,
+  "end": 6699,
+  "set": [
+   {
+    "type": "background",
+    "background-color": "#fff"
+   },
+   {
+    "type": "lyric",
+    "color": "#000"
+   },
+   {
+    "type": "text",
+    "color": "#000"
+   }
+  ]
+ },
+ {
+  "type": "style",
+  "start": 6700,
+  "end": 9299,
+  "set": [
+   {
+    "type": "background",
+    "background-color": "#000"
+   },
+   {
+    "type": "lyric",
+    "color": "#fff"
+   },
+   {
+    "type": "text",
+    "color": "#fff"
+   }
+  ]
+ },
+ {
+  "type": "style",
+  "start": 9300,
+  "end": 11499,
+  "set": [
+   {
+    "type": "background",
+    "background-color": "#fff"
+   },
+   {
+    "type": "lyric",
+    "color": "#000"
+   },
+   {
+    "type": "text",
+    "color": "#000"
+   }
+  ]
+ },
+ {
+  "type": "style",
+  "start": 11500,
+  "end": 13800,
+  "set": [
+   {
+    "type": "background",
+    "background-color": "#000"
+   },
+   {
+    "type": "lyric",
+    "color": "#fff"
+   },
+   {
+    "type": "text",
+    "color": "#fff"
+   }
+  ]
+ }
+]

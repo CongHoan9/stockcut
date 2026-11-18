@@ -1,0 +1,24 @@
+[
+ {
+  "type": "background"
+ },
+ {
+  "type": "lyric",
+  "revealMode": "display",
+  "text-align": "left",
+  "left": "30cqw",
+  "width": "700px",
+  "font-size": 140,
+  "line-height": 1.25,
+  "revealDuration": 500,
+  "z-index": 1,
+  "font-weight": 400,
+  "font-style": "normal",
+  "font-family": "Roboto Condensed"
+ },
+ {
+  "type": "effect",
+  "start": 0,
+  "end": "100%"
+ }
+]

@@ -1,0 +1,106 @@
+# =============================================================================
+# 1. Dev Reports, Architecture Drafts, AI Rules & Internal Notes
+# =============================================================================
+/BAO_CAO_*.md
+/CANH_GIOI_*.md
+/KIEN_TRUC_*.md
+/LO_TRINH_*.md
+/GEMINI.md
+/BIT_AND_REGISTER_DICTIONARY.txt
+/nhat_ky_toc_do_bench.txt
+/recent_edits.txt
+/SoDoTongQuan.txt
+/specialization_edits.txt
+/toiuu.txt
+/font_family.txt
+/mermaid-diagram.svg
+/LLM/*.md
+/LLM/Role.txt
+/LLM/native/biendich.txt
+
+# =============================================================================
+# 2. Test, Benchmark, Verification, Debug Scripts & Screenshots
+# =============================================================================
+/compare_wasm.py
+/water_scenario_groundtruth.json
+/current_state.png
+test_*.js
+test_*.py
+test_*.html
+check_*.py
+verify_*.py
+screenshot_*.png
+tab_*.png
+/scripts/
+/scratch/
+/native/benchmark.cpp
+/native/benchmarks/
+/native/update_b64.js
+/native/previous/
+/native/woff2/vendor/brotli/tests/
+/native/woff2/vendor/brotli/python/
+*bench*.cpp
+*.log
+
+# =============================================================================
+# 3. Build Artifacts, Compiled Objects, Training Data & Local Caches
+# =============================================================================
+/native/.build/
+/native/stockcut.js
+/native/stockcut.wasm
+/LLM/native/build/
+/LLM/dataset/
+/LLM/save/
+/LLM/*.ipynb
+/LLM/train_commands.bat
+*.o
+*.obj
+*.d
+*.a
+*.so
+*.dll
+*.exe
+*.pdb
+*.tmp
+*.bak
+__pycache__/
+*.py[cod]
+.vscode/
+.DS_Store
+Thumbs.db
+
+# =============================================================================
+# 4. Large AI Models (>100MB GitHub Limit)
+# =============================================================================
+/model.onnx
+*.onnx
+*.gguf
+*.safetensors
+*.pt
+*.pth
+*.ckpt
+
+# =============================================================================
+# 5. External Reference Repositories & Local Reverse-Engineering / Input Dumps
+# =============================================================================
+/blender-main/
+/KataGo-master/
+/madmom-main/
+/Minecraft-CSS-main/
+/Natron-RB-2.6/
+/obs-studio-master/
+/olive-master/
+/pixijs-dev/
+/stockfish/
+/Reverse Engineering/
+/ExtractedEffects/
+/app_input/
+
+# =============================================================================
+# 6. Personal Local Video Projects (Keep only lightweight Hotel Room demo JSON)
+# =============================================================================
+/src/*
+!/src/Hotel Room/
+/src/Hotel Room/*
+!/src/Hotel Room/*.json
+!/src/Hotel Room/lyrics.txt

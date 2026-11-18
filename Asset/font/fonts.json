@@ -1,0 +1,82 @@
+[
+  {
+    "family": "Roboto Condensed",
+    "dir": "RobotoCondensed",
+    "variants": [
+      { "weight": 300, "italic": false, "file": "RobotoCondensed-Light.ttf" },
+      { "weight": 300, "italic": true,  "file": "RobotoCondensed-LightItalic.ttf" },
+      { "weight": 400, "italic": false, "file": "RobotoCondensed-Regular.ttf" },
+      { "weight": 400, "italic": true,  "file": "RobotoCondensed-Italic.ttf" },
+      { "weight": 700, "italic": false, "file": "RobotoCondensed-Bold.ttf" },
+      { "weight": 700, "italic": true,  "file": "RobotoCondensed-BoldItalic.ttf" }
+    ]
+  },
+  {
+    "family": "Antonio",
+    "dir": "Antonio",
+    "variants": [
+      { "weight": 100, "italic": false, "file": "Antonio-Thin.ttf" },
+      { "weight": 200, "italic": false, "file": "Antonio-ExtraLight.ttf" },
+      { "weight": 300, "italic": false, "file": "Antonio-Light.ttf" },
+      { "weight": 400, "italic": false, "file": "Antonio-Regular.ttf" },
+      { "weight": 500, "italic": false, "file": "Antonio-Medium.ttf" },
+      { "weight": 600, "italic": false, "file": "Antonio-SemiBold.ttf" },
+      { "weight": 700, "italic": false, "file": "Antonio-Bold.ttf" }
+    ]
+  },
+  {
+    "family": "Oswald",
+    "dir": "Oswald",
+    "variants": [
+      { "weight": 200, "italic": false, "file": "Oswald-ExtraLight.ttf" },
+      { "weight": 300, "italic": false, "file": "Oswald-Light.ttf" },
+      { "weight": 400, "italic": false, "file": "Oswald-Regular.ttf" },
+      { "weight": 500, "italic": false, "file": "Oswald-Medium.ttf" },
+      { "weight": 600, "italic": false, "file": "Oswald-SemiBold.ttf" },
+      { "weight": 700, "italic": false, "file": "Oswald-Bold.ttf" }
+    ]
+  },
+  {
+    "family": "Roboto",
+    "dir": "Roboto",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "Roboto-VariableFont_wdth.ttf" }
+    ]
+  },
+  {
+    "family": "Minecraft",
+    "dir": "Minecraft",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "Minecraft-Regular.otf" },
+      { "weight": 700, "italic": false, "file": "Minecraft-Ten.ttf" }
+    ]
+  },
+  {
+    "family": "NVN-Motherland-Signature",
+    "dir": "NVN-Motherland-Signature",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "NVN-Motherland-Signature.ttf" }
+    ]
+  },
+  {
+    "family": "SVN-Astronout",
+    "dir": "SVN-Astronout",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "SVN-Astronout.otf" }
+    ]
+  },
+  {
+    "family": "SVN-Authoritative",
+    "dir": "SVN-Authoritative",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "SVN-Authoritative.otf" }
+    ]
+  },
+  {
+    "family": "Region",
+    "dir": "Region",
+    "variants": [
+      { "weight": 400, "italic": false, "file": "Region.ttf" }
+    ]
+  }
+]

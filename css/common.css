@@ -1,0 +1,567 @@
+/* ============================================================================
+   COMMON.CSS — UNIFIED STUDIO DESIGN SYSTEM & MASTER BASE CLASSES
+   - Tab Navigation (Lớp cha duy nhất: .tab-nav, .tab-btn, .tab-sep)
+   - Zero DOM Disruption: Không đổi font-weight khi hover/active, giữ nguyên layout
+   - Flat & Inline Studio Theme ('Lexend', sans-serif typography)
+   - Search Highlight & Universal No-Wrapping Standards
+   ============================================================================ */
+
+:root {
+    /* Surface Hierarchy (Restored Deep Dark Studio) */
+    --bg-canvas: #0e0e12;
+    --bg-base: #141418;
+    --bg-surface: #18181d;
+    --bg-surface-elevated: #1f1f26;
+    --bg-surface-hover: #272732;
+    --bg-surface-active: #2f2f3d;
+
+    /* Border Hierarchy */
+    --border-subtle: #24242c;
+    --border-default: #2d2d38;
+    --border-hover: #3f3f50;
+    --border-focus: #43ad6a;
+
+    /* Typography Hierarchy */
+    --text-primary: #f2f2f8;
+    --text-secondary: #c4c4d4;
+    --text-muted: #828294;
+    --text-dim: #545464;
+    --text-accent: #43ad6a;
+
+    /* Semantic Status Colors */
+    --color-highlight: #43ad6a;
+    --color-highlight-hover: #52c57e;
+    --color-accent: #43ad6a;
+    --color-accent-hover: #52c57e;
+    --color-accent-active: #358d55;
+    --color-accent-subtle: rgba(67, 173, 106, 0.15);
+    --color-success: #10b981;
+    --color-warning: #f59e0b;
+    --color-danger: #ef4444;
+    --color-info: #06b6d4;
+
+    /* Standard Heights & Spacing */
+    --panel-header-h: 50px;
+    --tabs-bar-h: 38px;
+    --drawer-header-h: 38px;
+    --drawer-padding: 20px 24px;
+    --radius-xs: 2px;
+    --radius-sm: 4px;
+    --radius-md: 6px;
+    --radius-lg: 8px;
+    --radius-xl: 12px;
+    --radius-full: 9999px;
+
+    /* Single System Typography ('Lexend', sans-serif) */
+    /* Typography Tokens — Technical Psychology Hierarchy */
+    --font-heading: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-label: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-code: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+    --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', 'Consolas', 'Courier New', monospace;
+    --font-main: 'Lexend', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ============================================================================
+   1. MASTER TAB SYSTEM (LỚP CHA DUY NHẤT: .tab-nav, .tab-btn, .tab-sep)
+   - Flat Inline Tab Style: 'Lexend' Typography
+   - ZERO DOM / LAYOUT SHIFT: Giữ nguyên font-weight cả khi hover và active
+   - Text viết hoa chuẩn Studio, KHÔNG ép bold bằng style
+   ============================================================================ */
+
+.tab-nav {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    align-items: center;
+    height: 100%;
+    gap: 4px !important;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+/* Lớp cha nút tab chuẩn mực dùng chung toàn hệ thống */
+.tab-btn {
+    background: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 2px solid transparent !important;
+    color: var(--text-muted, #828294) !important;
+    font-family: var(--font-heading) !important;
+    font-size: 0.78rem !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    height: 100%;
+    width: auto !important;
+    max-width: max-content !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-sizing: border-box;
+    white-space: nowrap !important;
+    text-decoration: none;
+    text-transform: uppercase !important;
+    user-select: none;
+    transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.tab-btn span,
+.tab-btn b,
+.tab-btn * {
+    display: inline !important;
+    white-space: nowrap !important;
+}
+
+/* Hover: Sáng màu chữ trắng, giữ nguyên layout */
+.tab-btn:hover {
+    background: transparent !important;
+    color: var(--text-primary, #ffffff) !important;
+    outline: none;
+}
+
+/* Active: Màu trắng tinh với gạch chân Accent (#43ad6a) */
+.tab-btn.active:not(.editor-tab-btn):not(.media-sub-btn) {
+    background: transparent !important;
+    color: #ffffff !important;
+    border-bottom: 2px solid var(--text-accent, #43ad6a) !important;
+    box-shadow: none !important;
+    margin-bottom: 0 !important;
+    z-index: 5 !important;
+    text-shadow: none !important;
+}
+
+.tab-btn.editor-tab-btn,
+.tab-btn.editor-tab-btn.active,
+.tab-btn.media-sub-btn,
+.tab-btn.media-sub-btn.active {
+    border-bottom: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Dấu phân cách dọc chuẩn | */
+.tab-sep,
+.debug-tab-sep,
+.debug-sep {
+    color: #4b5563 !important;
+    font-family: 'Lexend', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    font-size: 0.74rem !important;
+    font-weight: 300 !important;
+    line-height: 1 !important;
+    padding: 0 4px !important;
+    user-select: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+}
+
+/* Kế thừa tương thích ngược cho các selector cũ nếu còn tồn tại */
+.media-tabs-nav,
+.debug-tabs-nav,
+.studio-tabs-nav,
+.style-tab-nav {
+    display: inline-grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    align-items: center;
+    gap: 10px;
+    height: 100%;
+    box-sizing: border-box;
+    user-select: none;
+}
+
+.media-tab-sep,
+.editor-tab-sep,
+.debug-tab-sep,
+.studio-tab-sep,
+.style-tab-sep {
+    color: #4b5563 !important;
+    font-size: 0.74rem;
+    user-select: none;
+    flex-shrink: 0;
+}
+
+/* Tùy biến thanh chứa tabs cho Editor Panel */
+.editor-tabs-bar {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    align-items: center;
+    gap: 10px;
+    height: var(--tabs-bar-h, 38px);
+    min-height: var(--tabs-bar-h, 38px);
+    background: var(--bg-surface, #18181d);
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    box-shadow: none;
+    padding: 0 16px;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+/* ============================================================================
+   2. MASTER PANEL HEADERS & SUBBARS (Thuần CSS Grid)
+   ============================================================================ */
+
+.studio-header,
+.studio-panel-header,
+.chat-header,
+.editor-header,
+.activity-logo-slot {
+    padding: 0 16px;
+    background: var(--bg-surface-elevated, #1f1f26) !important;
+    border-bottom: 1px solid var(--border-subtle, #24242c) !important;
+    box-shadow: none !important;
+    font-family: var(--font-heading);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    height: var(--panel-header-h, 50px);
+    min-height: var(--panel-header-h, 50px);
+    max-height: var(--panel-header-h, 50px);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    box-sizing: border-box;
+    user-select: none;
+    text-shadow: none !important;
+}
+
+.studio-subbar,
+.editor-subbar {
+    display: grid;
+    grid-template-columns: 100%;
+    align-items: center;
+    background: var(--bg-surface, #18181d);
+    border-bottom: 1px solid var(--border-subtle, #24242c);
+    height: var(--panel-header-h, 50px);
+    box-sizing: border-box;
+}
+
+/* ============================================================================
+   3. MASTER SEARCH BAR
+   ============================================================================ */
+
+.studio-search-container,
+.json-search-container {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    align-items: center;
+    gap: 8px;
+    height: var(--panel-header-h, 50px);
+    width: 100%;
+    padding: 0 16px;
+    border: none;
+    overflow: hidden;
+    background: transparent;
+    box-sizing: border-box;
+}
+
+.studio-search-input,
+.workspace-search-input {
+    width: 100%;
+    height: 34px;
+    line-height: 1;
+    background: var(--bg-base, #141418);
+    border: 1px solid var(--border-default, #2d2d38);
+    box-shadow: none;
+    outline: none;
+    color: var(--text-primary, #f2f2f8);
+    padding: 0 10px;
+    margin: 0;
+    font-size: 0.85rem;
+    font-family: var(--font-main);
+    box-sizing: border-box;
+    border-radius: var(--radius-md, 6px) !important;
+    transition: border-color 0.15s ease;
+}
+
+.studio-search-input:focus,
+.workspace-search-input:focus {
+    border-color: var(--border-focus, #43ad6a);
+}
+
+.studio-search-count,
+#json-search-count {
+    font-size: 0.8rem;
+    color: var(--text-muted, #828294);
+    white-space: nowrap;
+    user-select: none;
+    margin: 0 2px;
+    min-width: 28px;
+    text-align: right;
+    font-family: var(--font-mono);
+}
+
+.studio-search-controls,
+.json-search-controls {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: max-content;
+    align-items: center;
+    gap: 2px;
+}
+
+.studio-search-btn,
+.json-search-btn {
+    background: transparent !important;
+    border: none;
+    color: var(--text-muted, #828294);
+    cursor: pointer;
+    font-size: 0.75rem;
+    width: 24px;
+    height: 24px;
+    line-height: 1;
+    display: grid;
+    place-items: center;
+    padding: 0;
+    border-radius: var(--radius-xs, 2px);
+    transition: color 0.15s;
+}
+
+.studio-search-btn:hover,
+.json-search-btn:hover {
+    color: var(--text-primary, #ffffff);
+}
+
+/* ============================================================================
+   4. BÔI MÀU VÙNG KÝ TỰ TRÙNG (SEARCH HIGHLIGHT)
+   ============================================================================ */
+
+.studio-search-match,
+.json-search-match {
+    background: rgba(67, 173, 106, 0.35) !important;
+    color: #ffffff !important;
+    border-radius: 2px !important;
+}
+
+.studio-search-match-active,
+.json-search-match-active {
+    background: #43ad6a !important;
+    color: #ffffff !important;
+    border-radius: 2px !important;
+}
+
+::selection {
+    background: rgba(67, 173, 106, 0.4);
+    color: #ffffff;
+}
+
+/* ============================================================================
+   5. STRICT NO-WRAPPING & AUTO-ELLIPSIS (Quy chuẩn một dòng & tự động '...')
+   Mọi Header, Button, Combobox, Label, Tab nếu quá dài BẮT BUỘC nằm trên đúng 1 dòng
+   và tự động thêm dấu ba chấm '...' thay vì rớt dòng gây xáo trộn giao diện.
+   ============================================================================ */
+
+/* 5.1 Tất cả Button và Tab */
+button,
+.tab-btn,
+.toolbar-btn,
+.drawer-btn-run,
+.drawer-text-btn,
+.json-search-btn,
+.studio-search-btn,
+.activity-btn,
+.media-audio-play-btn {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+/* 5.2 Tất cả Combobox (Select) */
+select,
+.ai-select-inline,
+.export-select-inline {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+/* 5.3 Headers và tiêu đề trong panel / drawer / toolbars */
+.studio-header,
+.studio-panel-header,
+.editor-header,
+.chat-header,
+.controls-bar,
+.media-drawer-header,
+.debug-drawer-header,
+.debug-graph-header,
+.editor-subbar,
+.editor-tabs-bar,
+.tab-nav,
+.side-pane-subbar,
+.media-sub-nav {
+    white-space: nowrap !important;
+}
+
+.studio-header > *,
+.header-col2-space,
+.header-left-group,
+.header-center-group,
+.header-right-group,
+.header-project-title,
+.col2-space-title,
+.col2-space-pill,
+.side-pane-title,
+.media-chat-title,
+.ratio-opt-title,
+.ratio-opt-sub,
+.ratio-current-text,
+.studio-panel-header > *,
+.editor-header > *,
+.chat-header > *,
+.media-drawer-header > *,
+.debug-graph-header > *,
+#status-text,
+#time-display,
+.debug-graph-title,
+.debug-stat-lbl,
+.debug-budget-meter-lbl {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+/* 5.4 Nhãn, Form Labels, Chips và Status Pills */
+label,
+.ai-field-label,
+.export-field-label,
+.drawer-label,
+.ai-audio-pill,
+#ai-audio-file-name,
+.debug-stat-lbl,
+.debug-stat-num,
+.debug-stat-sub,
+.debug-stat-unit,
+.debug-stat-mode-group {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+/* 5.5 Item labels trong danh sách (Font, Audio, Effect, Layers) */
+.font-item,
+.media-audio-col-name,
+.media-audio-col-artist,
+.media-audio-col-type,
+.media-audio-col-path,
+.media-audio-col-duration,
+.dbg-grid-th,
+.dbg-grid-td {
+    white-space: nowrap !important;
+    text-overflow: ellipsis !important;
+    overflow: hidden !important;
+    min-width: 0;
+}
+
+/* 5.6 NGOẠI TRỪ BẮT BUỘC: Nội dung cần xuống dòng */
+textarea,
+#json-editor,
+#ai-lyrics-text,
+#chat-input,
+.json-hl-backdrop,
+.json-hl-textarea {
+    text-overflow: clip !important;
+    overflow: visible;
+}
+
+.chat-message,
+.chat-bubble,
+.chat-text,
+.message-bubble,
+.bubble-content,
+.chat-bubble-text {
+    white-space: pre-wrap !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
+    text-overflow: clip !important;
+    overflow: visible !important;
+}
+
+/* ============================================================================
+   6. STUDIO UNIVERSAL DIVIDERS
+   ============================================================================ */
+hr,
+.col2-divider,
+.header-col2-divider,
+.drawer-divider,
+.pane-divider,
+.media-divider,
+.tab-divider {
+    border: none !important;
+    height: 1px !important;
+    background: var(--border-subtle, #24242c) !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.header-v-divider,
+.v-divider,
+.debug-sep-line {
+    width: 1px !important;
+    border: none !important;
+    background: var(--border-subtle, #24242c) !important;
+    box-sizing: border-box !important;
+}
+
+/* ============================================================================
+   7. SMOOTH FONT RENDERING & STUDIO SCROLLBAR
+   ============================================================================ */
+*, *::before, *::after {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* Master Studio Thin Scrollbars (4px, inline, dark subtle) */
+/* Dành riêng cho trình duyệt không hỗ trợ ::-webkit-scrollbar (Firefox) */
+@supports not selector(::-webkit-scrollbar) {
+    * {
+        scrollbar-width: thin !important;
+        scrollbar-color: #202028 transparent !important;
+    }
+}
+
+/* Chromium (Chrome, Edge, Brave): Sử dụng thuần ::-webkit-scrollbar để triệt tiêu hoàn toàn thanh cuộn mặc định của Windows */
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 4px !important;
+    height: 4px !important;
+}
+
+::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background: #202028 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 4px !important;
+}
+
+::-webkit-scrollbar-thumb:hover,
+*::-webkit-scrollbar-thumb:hover {
+    background: #343442 !important;
+}
+
+::-webkit-scrollbar-corner,
+*::-webkit-scrollbar-corner {
+    background: transparent !important;
+}
+
+::-webkit-scrollbar-button,
+*::-webkit-scrollbar-button {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}

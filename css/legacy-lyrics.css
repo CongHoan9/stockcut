@@ -1,0 +1,102 @@
+/* ============================================================================
+   legacy-lyrics.css — CSS của hệ lyrics/silk CŨ (silk-effect.js)
+   Timeline engine v5 render vào #overlay-layer và KHÔNG dùng các selector này
+   (.silk-char, .content-box, #lyric-container, #watermark, .watermark-inner,
+   #preview-effects-canvas, body.no-silk ...).
+   Giữ riêng để nếu không còn dùng, xoá file này + <link> tương ứng + các phần tử
+   cũ trong index.html là xong, không đụng tới giao diện chính.
+   ============================================================================ */
+
+.silk-char {
+    display: inline-block;
+    white-space: pre;
+
+    /* XÓA HOẶC COMMENT 2 DÒNG NÀY (Thủ phạm gây mờ chữ) */
+    /* will-change: transform; */
+    /* backface-visibility: hidden; */
+
+    /* THÊM 2 DÒNG NÀY ĐỂ BUỘC TRÌNH DUYỆT RENDER CHỮ SẮC NÉT */
+    -webkit-font-smoothing: subpixel-antialiased;
+    text-rendering: geometricPrecision;
+}
+
+.content-box {
+    position: relative;
+    display: inline-block;
+    z-index: 10;
+    /* GPU compositing cho per-char transforms */
+    will-change: transform;
+}
+
+#lyric-container {
+    text-align: center;
+    display: block;
+    white-space: pre-wrap;
+    line-height: 1.2; /* Tăng line-height một chút để hỗ trợ multiline đẹp hơn */
+    /* Render chữ với độ chính xác toán học tối đa trước khi filter apply */
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#watermark {
+    position: absolute;
+    right: 0;
+    bottom: -1.2em; /* Gần chữ chính hơn và tỷ lệ thuận với kích thước */
+    letter-spacing: 1px;
+    text-rendering: geometricPrecision;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* [FIX] Span con chứa text watermark — nơi hiệu ứng trượt (FLIP) được áp dụng,
+   tách biệt khỏi #watermark (cha) đang được SilkEffect/hiệu ứng "inEffect" điều khiển transform */
+.watermark-inner {
+    display: inline-block;
+    position: relative; /* Đảm bảo trở thành offsetParent để SilkEffect đọc được dataset.shiftx */
+    white-space: pre;
+    will-change: transform;
+}
+
+#preview-effects-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* =========================================
+   PART IN EFFECTS (Live Preview without Silk)
+========================================= */
+body.no-silk span.lyric-part[data-in-effect="slide-right"],
+body.no-silk span.lyric-watermark[data-in-effect="slide-right"],
+body.no-silk #watermark[data-in-effect="slide-right"] {
+    animation: effectSlideRight 0.3s cubic-bezier(0.215, 0.610, 0.355, 0.5) forwards;
+}
+@keyframes effectSlideRight {
+    from { transform: translateX(100px); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+body.no-silk span.lyric-part[data-in-effect="slide-up"],
+body.no-silk span.lyric-watermark[data-in-effect="slide-up"],
+body.no-silk #watermark[data-in-effect="slide-up"] {
+    animation: effectSlideUp 0.3s cubic-bezier(0.215, 0.610, 0.355, 0.5) forwards;
+}
+@keyframes effectSlideUp {
+    from { transform: translateY(50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+body.no-silk span.lyric-part[data-in-effect="fade"],
+body.no-silk span.lyric-watermark[data-in-effect="fade"],
+body.no-silk #watermark[data-in-effect="fade"] {
+    animation: effectFade 0.3s cubic-bezier(0.215, 0.610, 0.355, 0.5) forwards;
+}
+@keyframes effectFade {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
